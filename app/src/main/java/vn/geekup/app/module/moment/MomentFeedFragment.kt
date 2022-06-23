@@ -1,4 +1,4 @@
-package vn.geekup.app.module.moment.feed
+package vn.geekup.app.module.moment
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,6 @@ import vn.geekup.app.R
 import vn.geekup.app.base.BaseFragment
 import vn.geekup.app.databinding.FragmentMomentFeedBinding
 import vn.geekup.app.module.main.MainFragment
-import vn.geekup.app.module.moment.MomentViewModel
 import vn.geekup.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
