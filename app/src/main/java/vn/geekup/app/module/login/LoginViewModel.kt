@@ -31,7 +31,7 @@ class LoginViewModel(
                 Timber.e("Thread View Model Collect: ${Thread.currentThread().name}")
                 when (it) {
                     is ResultModel.Success -> {
-                        authUseCase.saveToken(it.data?.token ?: "")
+                        authUseCase.saveToken(it.data?.token ?: "", it.data?.refreshToken ?: "")
                         login.value = it.data?.token?.isNotEmpty()
                         isLoading.value = false
                     }
@@ -53,7 +53,7 @@ class LoginViewModel(
                 when (it) {
                     is ResultModel.Success -> {
                         isLoading.value = false
-                        authUseCase.saveToken(it.data?.token ?: "")
+                        authUseCase.saveToken(it.data?.token ?: "", it.data?.refreshToken ?: "")
                         login.value = it.data?.token?.isNotEmpty()
                     }
                     is ResultModel.ServerErrorException -> {

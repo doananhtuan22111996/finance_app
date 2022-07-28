@@ -9,7 +9,7 @@ interface AuthRepository {
 
     fun logout(): Flow<ResultModel<Boolean>>
 
-    suspend fun saveToken(token : String) : Flow<ResultModel<Unit>>
+    suspend fun saveToken(token: String, refreshToken: String): Flow<ResultModel<Unit>>
 
     suspend fun loginOTable(otableBody: OTableRequestBody): Flow<ResultModel<OTableModel>>
 

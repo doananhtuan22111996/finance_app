@@ -24,7 +24,7 @@ abstract class NetworkBoundService<RequestType, ResultType> {
         emit(
             fetchFromNetwork() ?: ResultModel.ServerErrorException(
                 code = CODE_999,
-                message = "Somethings wrong!"
+                message = "Network Somethings wrong!"
             )
         )
     }.flowOn(Dispatchers.IO)
@@ -51,10 +51,20 @@ abstract class NetworkBoundService<RequestType, ResultType> {
                 }
             }
         } else {
-            result = Gson().fromJson(
-                apiResponse.errorBody()?.toString(),
-                ResultModel.ServerErrorException::class.java
-            )
+            result = try {
+                Gson().fromJson(
+                    apiResponse.errorBody()?.toString(),
+                    ResultModel.ServerErrorException::class.java
+                ) ?: ResultModel.ServerErrorException(
+                    code = CODE_999,
+                    message = "Network Somethings wrong!"
+                )
+            } catch (e: Exception) {
+                ResultModel.ServerErrorException(
+                    code = CODE_999,
+                    message = "Network Somethings wrong! -- ${e.message}"
+                )
+            }
         }
         return result
     }

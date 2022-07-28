@@ -28,8 +28,9 @@ class AuthDataSource constructor(
                 ResultModel.Success(data = true)
         }.build()
 
-    override suspend fun saveToken(token: String): Flow<ResultModel<Unit>> {
+    override suspend fun saveToken(token: String, refreshToken: String): Flow<ResultModel<Unit>> {
         preferenceWrapper.saveString(Config.SharePreference.KEY_AUTH_TOKEN, token)
+        preferenceWrapper.saveString(Config.SharePreference.KEY_AUTH_REFRESH_TOKEN, refreshToken)
         return emptyFlow()
     }
 

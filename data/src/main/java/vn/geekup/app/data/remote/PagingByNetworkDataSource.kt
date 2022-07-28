@@ -3,6 +3,7 @@ package vn.geekup.app.data.remote
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -53,7 +54,6 @@ abstract class PagingByNetworkDataSource<RequestType : Any, ResultType : Any> :
                             )
                         }
                         else -> {
-
                             val error = ResultModel.ServerErrorException(
                                 code = apiResponse.code(),
                                 message = apiResponse.message()
@@ -63,16 +63,23 @@ abstract class PagingByNetworkDataSource<RequestType : Any, ResultType : Any> :
                     }
                 } else {
                     Log.e("PagingByKeyDataSource", "${apiResponse.errorBody()?.toString()}")
-
-                    // Todo Change when know baseResponse
-//                val result = Gson().fromJson(
-//                    apiResponse.errorBody()?.toString(),
-//                    ResultModel.ServerErrorException::class.java
-//                )
-                    LoadResult.Error(Throwable("Api something wrong"))
+                    try {
+                        val result = Gson().fromJson(
+                            apiResponse.errorBody()?.toString(),
+                            ResultModel.ServerErrorException::class.java
+                        ) ?: null
+                        LoadResult.Error(
+                            Throwable(
+                                result?.message ?: "Network somethings wrong!!!"
+                            )
+                        )
+                    } catch (e: Exception) {
+                        LoadResult.Error(
+                            Throwable("Network somethings wrong!!! --- ${e.message}")
+                        )
+                    }
                 }
             }
-
         } catch (e: IOException) {
             LoadResult.Error(e)
         } catch (e: HttpException) {

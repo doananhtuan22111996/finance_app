@@ -10,7 +10,7 @@ interface AuthUseCase {
 
     fun logout(): Flow<ResultModel<Boolean>>
 
-    suspend fun saveToken(token: String): Flow<ResultModel<Unit>>
+    suspend fun saveToken(token: String, refreshToken: String): Flow<ResultModel<Unit>>
 
     suspend fun loginOTable(otableBody: OTableRequestBody): Flow<ResultModel<OTableModel>>
 
@@ -28,8 +28,8 @@ class AuthUseCaseImplement(private var authRepository: AuthRepository) : AuthUse
         return authRepository.loginOTable(otableBody)
     }
 
-    override suspend fun saveToken(token: String): Flow<ResultModel<Unit>> {
-        return authRepository.saveToken(token)
+    override suspend fun saveToken(token: String, refreshToken: String): Flow<ResultModel<Unit>> {
+        return authRepository.saveToken(token, refreshToken)
     }
 
     override suspend fun loginWithTravel(): Flow<ResultModel<OTableModel>> {
