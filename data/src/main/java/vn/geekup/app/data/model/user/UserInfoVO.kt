@@ -1,7 +1,6 @@
 package vn.geekup.app.data.model.user
 
 import vn.geekup.app.data.model.general.BaseVO
-import vn.geekup.app.domain.model.user.RoleAuthority
 import vn.geekup.app.domain.model.user.UserInfoModel
 
 data class UserInfoVO(
@@ -27,10 +26,6 @@ data class UserInfoVO(
         id = id,
         email = email ?: "",
         shortName = shortName ?: "",
-        currentAuthority = when (currentAuthority) {
-            RoleAuthority.User().roleName -> RoleAuthority.User()
-            else -> RoleAuthority.Admin()
-        },
         currentLevelId = currentLevelId,
         isFormFill = isFormFill == 1,
         firstDay = firstDay ?: "",

@@ -1,13 +1,16 @@
 package vn.geekup.app.data.local
 
 import androidx.paging.*
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
 import vn.geekup.app.data.Config
+import vn.geekup.app.data.Config.ErrorCode.CODE_999
 import vn.geekup.app.data.model.general.ListResponse
+import vn.geekup.app.data.model.general.ObjectResponse
 import vn.geekup.app.domain.model.general.RemoteKey
 import vn.geekup.app.domain.model.general.ResultModel
 import java.io.IOException
@@ -16,7 +19,7 @@ import java.io.IOException
 abstract class PagingByLocalDataSource<RequestType : Any, ResultType : Any, remote : RemoteKey> :
     RemoteMediator<Int, ResultType>() {
 
-    abstract suspend fun onApi(nextKey: String?): Response<ListResponse<RequestType>>
+    abstract suspend fun onApi(nextKey: String?): Response<ObjectResponse<ListResponse<RequestType>>>
     abstract suspend fun processResponse(request: ListResponse<RequestType>?): ListResponse<ResultType>?
     abstract suspend fun getInitKey(): remote?
     abstract suspend fun getRemoteKey(state: PagingState<Int, ResultType>): remote?
@@ -71,7 +74,7 @@ abstract class PagingByLocalDataSource<RequestType : Any, ResultType : Any, remo
                     val body = apiResponse.body()
                     when (apiResponse.code()) {
                         Config.ErrorCode.CODE_200, Config.ErrorCode.CODE_201, Config.ErrorCode.CODE_204 -> {
-                            val data = processResponse(body)
+                            val data = processResponse(body?.data)
                             if (loadType == LoadType.REFRESH) {
                                 onRefresh()
                             }
@@ -88,13 +91,18 @@ abstract class PagingByLocalDataSource<RequestType : Any, ResultType : Any, remo
                     }
                 } else {
                     Timber.e("PagingByLocalDataSource: ${apiResponse.errorBody()?.toString()}")
-
-                    // Todo Change when know baseResponse
-//                val result = Gson().fromJson(
-//                    apiResponse.errorBody()?.toString(),
-//                    ResultModel.ServerErrorException::class.java
-//                )
-                    MediatorResult.Error(Throwable("Api somethings wrong"))
+                    try {
+                        val result = Gson().fromJson(
+                            apiResponse.errorBody()?.toString(),
+                            ResultModel.ServerErrorException::class.java
+                        ) ?: ResultModel.ServerErrorException(
+                            code = CODE_999,
+                            message = "Network somthings wrong!!!"
+                        )
+                        MediatorResult.Error(Throwable(message = result.message))
+                    } catch (e: Exception) {
+                        MediatorResult.Error(Throwable("Network somethings wrong!!!"))
+                    }
                 }
             }
         } catch (e: IOException) {

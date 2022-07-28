@@ -17,7 +17,7 @@ object Config {
         get() = BuildConfig.DEBUG
 
     val mainDomain: String
-        get() = BuildConfig.TRAVEL_DOMAIN
+        get() = BuildConfig.MAIN_DOMAIN
 
     object Cache {
         const val CACHE_FILE_NAME = "HttpCache"

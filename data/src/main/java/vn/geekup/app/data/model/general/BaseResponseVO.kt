@@ -10,16 +10,15 @@ abstract class BaseResponse<BV>(
         val statusCode: Int? = 0,
         val message: String? = "",
         @SerializedName("next_page")
-        val nextPage : Int? = 0,
+        val nextPage: Int? = 0,
     )
 }
 
 data class ObjectResponse<BV>(val data: BV? = null) : BaseResponse<BV>()
 
 data class ListResponse<BV>(
-    @SerializedName("data")
     var items: ArrayList<BV>? = arrayListOf(),
     val metadata: BaseResponse.MetaData? = BaseResponse.MetaData(),
     val limit: Int? = 0,
-    val nextCursor: String? = ""
+    val nextCursor: String?
 )

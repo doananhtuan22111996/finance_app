@@ -76,9 +76,9 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>(),
     }
 
     fun onClickLoginOTable() {
-//        redirectLoginOTable(true)
-//        initWebView()
-        viewModel.loginWithTravel()
+        redirectLoginOTable(true)
+        initWebView()
+//        viewModel.loginWithTravel()
     }
 
     private fun requestLoginOTable(otableToken: String) {

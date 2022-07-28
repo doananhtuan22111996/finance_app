@@ -6,7 +6,6 @@ data class UserInfoModel(
     val id: Int = 0,
     val email: String = "",
     val shortName: String = "",
-    val currentAuthority: RoleAuthority = RoleAuthority.User(),
     val currentLevelId: Int = 0,
     val isFormFill: Boolean = false,
     val firstDay: String = "",

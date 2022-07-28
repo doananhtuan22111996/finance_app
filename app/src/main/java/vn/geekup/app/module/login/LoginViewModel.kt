@@ -8,7 +8,6 @@ import timber.log.Timber
 import vn.geekup.app.base.BaseViewModel
 import vn.geekup.app.domain.dto.OTableRequestBody
 import vn.geekup.app.domain.model.general.ResultModel
-import vn.geekup.app.domain.model.user.RoleAuthority
 import vn.geekup.app.domain.usecase.AuthUseCase
 import vn.geekup.app.network.NetworkChange
 
@@ -24,7 +23,7 @@ class LoginViewModel(
         this.isLoading.value = isLoading
     }
 
-    fun loginOTable(otableToken: String, roleAuthority: String = RoleAuthority.User().roleName) {
+    fun loginOTable(otableToken: String, roleAuthority: String = "admin") {
         isLoading.value = true
         viewModelScope.launch {
             authUseCase.loginOTable(OTableRequestBody(otableToken, roleAuthority)).collectLatest {

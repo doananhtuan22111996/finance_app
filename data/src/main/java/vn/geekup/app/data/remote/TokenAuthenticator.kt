@@ -3,9 +3,10 @@ package vn.geekup.app.data.remote
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import okhttp3.*
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.use
 import timber.log.Timber
-import vn.geekup.app.data.BuildConfig
 import vn.geekup.app.data.Config
 import vn.geekup.app.data.Config.ErrorCode.CODE_200
 import vn.geekup.app.data.Config.ErrorCode.CODE_401
@@ -36,9 +37,9 @@ class TokenAuthenticator(
 
     private fun refreshToken(refreshToken: String) {
         val request = Request.Builder()
-            .url("${Config.mainDomain}users-refresh-token")
-            .header("Authorizationrefresh", "Bearer $refreshToken")
-            .get()
+            .url("${Config.mainDomain}auth/refresh")
+//            .header("Authorizationrefresh", "Bearer $refreshToken")
+            .post(refreshToken.toRequestBody())
             .build()
         OkHttpClient().newBuilder()
             .addNetworkInterceptor(StethoInterceptor())
@@ -55,10 +56,10 @@ class TokenAuthenticator(
                         Config.SharePreference.KEY_AUTH_TOKEN,
                         oTableVO?.token ?: ""
                     )
-                    preferenceWrapper.saveString(
-                        Config.SharePreference.KEY_AUTH_REFRESH_TOKEN,
-                        oTableVO?.refreshToken ?: ""
-                    )
+//                    preferenceWrapper.saveString(
+//                        Config.SharePreference.KEY_AUTH_REFRESH_TOKEN,
+//                        oTableVO?.refreshToken ?: ""
+//                    )
                 } else {
                     Timber.e("Refresh Token Failure: ${response.message}")
                 }

@@ -13,7 +13,7 @@ interface AliaApiService {
     @GET("me/subscriptions/moments")
     suspend fun getFlowMomentFeeds(
         @Query("cursor") cursor: String? = null,
-        @Query("limit") limit: Int = 13,
+        @Query("limit") limit: Int = 25,
         @Query("sort") sort: String = "desc",
         @Query("date") dates: ArrayList<String>? = null,
     ): Response<ObjectResponse<ListResponse<MomentVO>>>

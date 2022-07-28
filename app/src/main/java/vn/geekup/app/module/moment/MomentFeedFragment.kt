@@ -44,24 +44,6 @@ class MomentFeedFragment : BaseFragment<MomentViewModel, FragmentMomentFeedBindi
         (parentFragment?.parentFragment as? MainFragment)?.bottomNavigationState(true)
         initRecyclerView()
         initRefreshLayout()
-
-        fragmentBinding.tvHtml.setText(
-            HtmlCompat.fromHtml(
-                "Great job! Looks like you will have a <(%x)> higher GOP than Forecast due to an increase in <(%d)>",
-                FROM_HTML_MODE_COMPACT,
-                null,
-            ) { opening, tag, output, xml ->
-                Log.e("Moment Feed Fragment", " $opening - $tag - $output - $xml")
-                if (opening) {
-                    if (tag.equals("x")) {
-                        output.append("<(%x)>")
-                    } else if (tag.equals("d")) {
-                        output.append("<%d>")
-                    }
-                }
-
-            }
-        )
     }
 
     override fun bindViewModel() {

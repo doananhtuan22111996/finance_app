@@ -11,6 +11,7 @@ import retrofit2.Response
 import timber.log.Timber
 import vn.geekup.app.data.Config
 import vn.geekup.app.data.model.general.ListResponse
+import vn.geekup.app.data.model.general.ObjectResponse
 import vn.geekup.app.domain.model.general.ResultModel
 import java.io.IOException
 
@@ -22,7 +23,7 @@ import java.io.IOException
 abstract class PagingByNetworkDataSource<RequestType : Any, ResultType : Any> :
     PagingSource<String, ResultType>() {
 
-    abstract suspend fun onApi(nextKey: String?): Response<ListResponse<RequestType>>
+    abstract suspend fun onApi(nextKey: String?): Response<ObjectResponse<ListResponse<RequestType>>>
     abstract suspend fun processResponse(request: ListResponse<RequestType>?): ListResponse<ResultType>?
 
     override fun getRefreshKey(state: PagingState<String, ResultType>): String? {
@@ -44,13 +45,13 @@ abstract class PagingByNetworkDataSource<RequestType : Any, ResultType : Any> :
                     val body = apiResponse.body()
                     when (apiResponse.code()) {
                         Config.ErrorCode.CODE_200, Config.ErrorCode.CODE_201, Config.ErrorCode.CODE_204 -> {
-                            val data = processResponse(body)
+                            val data = processResponse(body?.data)
                             Timber.tag("PagingByKeyDataSource").e(Thread.currentThread().name)
                             LoadResult.Page(
                                 data = data?.items ?: arrayListOf(),
                                 prevKey = null,
-//                            nextKey = data?.nextCursor ?: ""
-                                nextKey = if (data?.items?.isNotEmpty() == true) data.metadata?.nextPage?.toString() else null
+                                nextKey = data?.nextCursor
+//                                nextKey = if (data?.items?.isNotEmpty() == true) data.metadata?.nextPage?.toString() else null
                             )
                         }
                         else -> {
