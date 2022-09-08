@@ -30,6 +30,9 @@
     - Room
     - Share preference (Upgrade to Data Store)
 
+#### CI/CD
+    - Gitlab CI
+    - SonarQube
+
 #### What do next!
-    - Refresh Token
     - Style
