@@ -1,7 +1,12 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Code Refactoring
+- update keystore for android skeleton
+
 ### Features
+- README.md for v1.0.3
+- Setup CI .gitlab-ci.yml file with SonarQube
 - Setup CI .gitlab-ci.yml file with SonarQube
 
 
