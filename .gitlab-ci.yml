@@ -104,6 +104,9 @@ lintDataRelease:
       - data/lint/reports/
   after_script:
     - echo "Execute lintDataRelease completed!!!"
+  only:
+    - merge_request
+    - main
 
 # Check App linting
 lintAppRelease:
@@ -142,6 +145,9 @@ lintAppRelease:
       - app/lint/reports/
   after_script:
     - echo "Execute lintAppRelease completed!!!"
+  only:
+    - merge_request
+    - main
 
 # Make Project
 assembleRelease:
@@ -150,6 +156,7 @@ assembleRelease:
     ANDROID_COMPILE_SDK: "30"
     ANDROID_BUILD_TOOLS: "30.0.3"
     ANDROID_SDK_TOOLS: "8512546"
+    ANDROID_KEYSTORE: $ANDROID_KEYSTORE
   before_script:
     - apt-get --quiet update --yes
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
@@ -174,13 +181,18 @@ assembleRelease:
   tags:
     - sandroid-runner
   script:
+    - echo -n ${ANDROID_KEYSTORE} | base64 -d > skeleton-key-store.jks
     - ./gradlew assembleProdRelease
   artifacts:
     paths:
       - app/build/outputs/apk/prod/release/skeleton_prod.apk
   after_script:
     - echo "Execute assembleRelease completed!!!"
+  only:
+    - merge_request
+    - main
 
+# Sonarqube
 sonarqubeRelease:
   stage: sonarqube
   image:
@@ -193,14 +205,17 @@ sonarqubeRelease:
   allow_failure: true
   after_script:
     - echo "Execute sonarqubeRelease completed!!!"
+  only:
+    - merge_request
+    - main
 
 # Run all tests, if any fails, interrupt the pipeline(fail it)
 #releaseUnitTests:
-#   interruptible: true
-#   stage: test
-#   tags:
-#     - sandroid-runner
-#   script:
-#     - ./gradlew -Pci --console=plain :app:testProdReleaseUnitTest
-#   after_script:
-#     - echo "Execute releaseUnitTests completed!!!"
+#  interruptible: true
+#  stage: test
+#  tags:
+#    - sandroid-runner
+#  script:
+#    - ./gradlew -Pci --console=plain :app:testProdReleaseUnitTest
+#  after_script:
+#    - echo "Execute releaseUnitTests completed!!!"
