@@ -102,6 +102,7 @@ lintDataRelease:
   artifacts:
     paths:
       - data/lint/reports/
+  allow_failure: true
   after_script:
     - echo "Execute lintDataRelease completed!!!"
   only:
@@ -140,6 +141,7 @@ lintAppRelease:
     - sandroid-runner
   script:
     - ./gradlew -Pci --console=plain :app:lintProdRelease -PbuildDir=lint
+  allow_failure: true
   artifacts:
     paths:
       - app/lint/reports/
@@ -183,6 +185,7 @@ assembleRelease:
   script:
     - echo -n ${ANDROID_KEYSTORE} | base64 -d > skeleton-key-store.jks
     - ./gradlew assembleProdRelease
+  allow_failure: true
   artifacts:
     paths:
       - app/build/outputs/apk/prod/release/skeleton_prod.apk
