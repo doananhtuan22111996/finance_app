@@ -69,30 +69,7 @@ stages:
 
 # Check App linting
 lintDataRelease:
-  image: openjdk:11-jdk
-  variables:
-    ANDROID_COMPILE_SDK: "30"
-    ANDROID_BUILD_TOOLS: "30.0.3"
-    ANDROID_SDK_TOOLS: "8512546"
-  before_script:
-    - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
-    - export ANDROID_HOME="${PWD}/android-home"
-    - install -d $ANDROID_HOME
-    - wget --output-document=$ANDROID_HOME/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
-    - pushd $ANDROID_HOME
-    - unzip -d cmdline-tools cmdline-tools.zip
-    - pushd cmdline-tools
-    - mv cmdline-tools tools || true
-    - popd
-    - popd
-    - export PATH=$PATH:${ANDROID_HOME}/cmdline-tools/tools/bin/
-    - sdkmanager --version
-    - yes | sdkmanager --licenses || true
-    - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
-    - sdkmanager "platform-tools"
-    - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
-    - chmod +x ./gradlew
+  image: cimg/android:2022.09.2-browsers
   interruptible: true
   stage: data
   tags:
@@ -110,30 +87,7 @@ lintDataRelease:
 
 # Check App linting
 lintAppRelease:
-  image: openjdk:11-jdk
-  variables:
-    ANDROID_COMPILE_SDK: "30"
-    ANDROID_BUILD_TOOLS: "30.0.3"
-    ANDROID_SDK_TOOLS: "8512546"
-  before_script:
-    - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
-    - export ANDROID_HOME="${PWD}/android-home"
-    - install -d $ANDROID_HOME
-    - wget --output-document=$ANDROID_HOME/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
-    - pushd $ANDROID_HOME
-    - unzip -d cmdline-tools cmdline-tools.zip
-    - pushd cmdline-tools
-    - mv cmdline-tools tools || true
-    - popd
-    - popd
-    - export PATH=$PATH:${ANDROID_HOME}/cmdline-tools/tools/bin/
-    - sdkmanager --version
-    - yes | sdkmanager --licenses || true
-    - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
-    - sdkmanager "platform-tools"
-    - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
-    - chmod +x ./gradlew
+  image: cimg/android:2022.09.2-browsers
   interruptible: true
   stage: app
   tags:
@@ -151,31 +105,9 @@ lintAppRelease:
 
 # Make Project
 assembleRelease:
-  image: openjdk:11-jdk
+  image: cimg/android:2022.09.2-browsers
   variables:
-    ANDROID_COMPILE_SDK: "30"
-    ANDROID_BUILD_TOOLS: "30.0.3"
-    ANDROID_SDK_TOOLS: "8512546"
     ANDROID_KEYSTORE: $ANDROID_KEYSTORE
-  before_script:
-    - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
-    - export ANDROID_HOME="${PWD}/android-home"
-    - install -d $ANDROID_HOME
-    - wget --output-document=$ANDROID_HOME/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
-    - pushd $ANDROID_HOME
-    - unzip -d cmdline-tools cmdline-tools.zip
-    - pushd cmdline-tools
-    - mv cmdline-tools tools || true
-    - popd
-    - popd
-    - export PATH=$PATH:${ANDROID_HOME}/cmdline-tools/tools/bin/
-    - sdkmanager --version
-    - yes | sdkmanager --licenses || true
-    - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
-    - sdkmanager "platform-tools"
-    - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
-    - chmod +x ./gradlew
   interruptible: true
   stage: build
   tags:
@@ -197,7 +129,7 @@ sonarqubeRelease:
   stage: sonarqube
   image:
     name: sonarsource/sonar-scanner-cli:latest
-    entrypoint: [ "" ]
+    entrypoint: [""]
   tags:
     - sandroid-runner
   script:
@@ -207,14 +139,3 @@ sonarqubeRelease:
   only:
     - merge_request
     - main
-
-# Run all tests, if any fails, interrupt the pipeline(fail it)
-#releaseUnitTests:
-#  interruptible: true
-#  stage: test
-#  tags:
-#    - sandroid-runner
-#  script:
-#    - ./gradlew -Pci --console=plain :app:testProdReleaseUnitTest
-#  after_script:
-#    - echo "Execute releaseUnitTests completed!!!"
