@@ -2,6 +2,13 @@
 ## [Unreleased]
 
 
+<a name="v1.0.5"></a>
+## [v1.0.5] - 2022-09-25
+### Code Refactoring
+- update gitlab CI
+- change version project, update config sonar
+
+
 <a name="v1.0.4"></a>
 ## [v1.0.4] - 2022-09-14
 ### Code Refactoring
@@ -36,7 +43,8 @@
 <a name="v1.0.0"></a>
 ## v1.0.0 - 2022-07-27
 
-[Unreleased]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.4...HEAD
+[Unreleased]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.5...HEAD
+[v1.0.5]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.4...v1.0.5
 [v1.0.4]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.3...v1.0.4
 [v1.0.3]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.2...v1.0.3
 [v1.0.2]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.1...v1.0.2

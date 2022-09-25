@@ -69,11 +69,10 @@ stages:
 
 # Check App linting
 lintDataRelease:
-  image: cimg/android:2022.09.2-browsers
   interruptible: true
   stage: data
   tags:
-    - sandroid-runner
+    - sandroid-shell
   script:
     - ./gradlew -Pci --console=plain :data:lintProdRelease -PbuildDir=lint
   artifacts:
@@ -87,11 +86,10 @@ lintDataRelease:
 
 # Check App linting
 lintAppRelease:
-  image: cimg/android:2022.09.2-browsers
   interruptible: true
   stage: app
   tags:
-    - sandroid-runner
+    - sandroid-shell
   script:
     - ./gradlew -Pci --console=plain :app:lintProdRelease -PbuildDir=lint
   artifacts:
@@ -105,13 +103,12 @@ lintAppRelease:
 
 # Make Project
 assembleRelease:
-  image: cimg/android:2022.09.2-browsers
   variables:
     ANDROID_KEYSTORE: $ANDROID_KEYSTORE
   interruptible: true
   stage: build
   tags:
-    - sandroid-runner
+    - sandroid-shell
   script:
     - echo -n ${ANDROID_KEYSTORE} | base64 -d > skeleton-key-store.jks
     - ./gradlew assembleProdRelease
@@ -127,11 +124,8 @@ assembleRelease:
 # Sonarqube
 sonarqubeRelease:
   stage: sonarqube
-  image:
-    name: sonarsource/sonar-scanner-cli:latest
-    entrypoint: [""]
   tags:
-    - sandroid-runner
+    - sandroid-shell
   script:
     - sonar-scanner
   after_script:
