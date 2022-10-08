@@ -2,11 +2,11 @@ ext.versions = [:]
 def versions = [:]
 
 versions.application = [
-        compileSdkVersion: 32,
+        compileSdkVersion: 33,
         minSdkVersion    : 26,
-        targetSdkVersion : 32,
+        targetSdkVersion : 33,
         versionCode      : 1,
-        versionName      : '1.0.4'
+        versionName      : '1.0.5'
 ]
 
 versions.test = [
@@ -29,36 +29,36 @@ versions.plugin = [
 ]
 
 versions.kotlin = [
-        kotlinStdlib: '1.6.20'
+        kotlinStdlib: '1.7.20'
 ]
 
 versions.androidX = [
-        coreKTX         : '1.8.0',
-        appcompat       : '1.4.2',
-        navigation      : '2.5.0',
+        coreKTX         : '1.9.0',
+        appcompat       : '1.5.1',
+        navigation      : '2.5.2',
         constraintlayout: '2.1.4',
-        lifecycle       : '2.5.0',
+        lifecycle       : '2.5.1',
         recyclerview    : '1.1.0',
         cardview        : '1.0.0',
-        splashScreen    : '1.0.0-rc01',
+        splashScreen    : '1.0.0',
         paging          : '3.1.1',
 ]
 
 versions.google = [
         material: '1.6.1',
-        gson    : '2.9.0'
+        gson    : '2.9.1'
 ]
 
 versions.di = [
         dagger: '2.38.1',
         hilt  : '2.41',
-        koin  : '3.2.0',
+        koin  : '3.2.2',
 ]
 
 versions.reactive = [
         rxandroid: '3.0.0',
         rxkotlin : '3.0.1',
-        coroutine: '1.6.3',
+        coroutine: '1.6.4',
 ]
 
 versions.local = [
@@ -67,7 +67,7 @@ versions.local = [
 ]
 
 versions.database = [
-        room: '2.4.2',
+        room: '2.4.3',
 ]
 
 versions.httpClient = [
@@ -79,7 +79,7 @@ versions.resource = [
         glux                : '1.0.0',
         glide               : '4.13.2',
         glideTransformations: '4.3.0',
-        coil                : '2.1.0'
+        coil                : '2.2.2'
 ]
 
 versions.swipeLayout = [
@@ -91,7 +91,7 @@ versions.firebase = [
 ]
 
 versions.anothers = [
-        jsoup: '1.15.1',
+        jsoup: '1.15.3',
 ]
 
 ext.versions = versions
