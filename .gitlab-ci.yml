@@ -63,54 +63,58 @@
 
 stages:
   - sonarqube
-  - data
-  - app
   - build
 
-# Check App linting
-lintDataRelease:
-  interruptible: true
-  stage: data
-  tags:
-    - sandroid-shell
-  script:
-    - ./gradlew -Pci --console=plain :data:lintProdRelease -PbuildDir=lint
-  artifacts:
-    paths:
-      - data/lint/reports/
-  after_script:
-    - echo "Execute lintDataRelease completed!!!"
-  only:
-    - merge_request
-    - main
-
-# Check App linting
-lintAppRelease:
-  interruptible: true
-  stage: app
-  tags:
-    - sandroid-shell
-  script:
-    - ./gradlew -Pci --console=plain :app:lintProdRelease -PbuildDir=lint
-  artifacts:
-    paths:
-      - app/lint/reports/
-  after_script:
-    - echo "Execute lintAppRelease completed!!!"
-  only:
-    - merge_request
-    - main
+## Check App linting
+#lintDataRelease:
+#  interruptible: true
+#  stage: data
+#  tags:
+#    - sandroid-shell
+#  script:
+#    - ./gradlew -Pci --console=plain :data:lintProdRelease -PbuildDir=lint
+#  artifacts:
+#    paths:
+#      - data/lint/reports/
+#  after_script:
+#    - echo "Execute lintDataRelease completed!!!"
+#  only:
+#    - merge_request
+#    - main
+#
+## Check App linting
+#lintAppRelease:
+#  interruptible: true
+#  stage: app
+#  tags:
+#    - sandroid-shell
+#  script:
+#    - ./gradlew -Pci --console=plain :app:lintProdRelease -PbuildDir=lint
+#  artifacts:
+#    paths:
+#      - app/lint/reports/
+#  after_script:
+#    - echo "Execute lintAppRelease completed!!!"
+#  only:
+#    - merge_request
+#    - main
 
 # Make Project
 assembleRelease:
   variables:
     ANDROID_KEYSTORE: $ANDROID_KEYSTORE
+    ANDROID_PROD_PROPERTIES: $ANDROID_PROD_PROPERTIES
+    ANDROID_DEV_PROPERTIES: $ANDROID_DEV_PROPERTIES
+    ANDROID_KEYSTORE_PROPERTIES: $ANDROID_KEYSTORE_PROPERTIES
   interruptible: true
   stage: build
   tags:
     - sandroid-shell
   script:
     - echo -n ${ANDROID_KEYSTORE} | base64 -d > skeleton-key-store.jks
+    - echo -n ${ANDROID_PROD_PROPERTIES} | base64 -d > env.prod.properties
+    - echo -n ${ANDROID_DEV_PROPERTIES} | base64 -d > env.dev.properties
+    - echo -n ${ANDROID_KEYSTORE_PROPERTIES} | base64 -d > keystore.properties
     - ./gradlew assembleProdRelease
   artifacts:
     paths:

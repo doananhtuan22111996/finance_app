@@ -39,10 +39,6 @@ android {
             dimension "mode"
             loadConfig(productFlavors.dev)
         }
-        staging {
-            dimension "mode"
-            loadConfig(productFlavors.staging)
-        }
         prod {
             dimension "mode"
             loadConfig(productFlavors.prod)
