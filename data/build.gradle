@@ -7,6 +7,7 @@ plugins {
 
 android {
     compileSdkVersion versions.application.compileSdkVersion
+    namespace 'vn.geekup.app.data'
 
     defaultConfig {
         minSdkVersion versions.application.minSdkVersion

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import vn.geekup.app.R
@@ -14,8 +13,7 @@ import vn.geekup.app.domain.model.general.ResultModel
 import vn.geekup.app.module.root.RootActivity
 import vn.geekup.app.utils.*
 
-class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>(),
-    RootActivity.OnBackPressListener {
+class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
 
     override val viewModel: LoginViewModel by viewModel()
 
@@ -23,7 +21,6 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>(),
         FragmentLoginBinding.inflate(layoutInflater, parent, true)
 
     override fun onInitLayout(view: View, savedInstanceState: Bundle?) {
-        (baseActivity as? RootActivity)?.setOnBackPressListener(this)
         baseActivity.setAppColorStatusBar()
         fragmentBinding.fragment = this
     }
@@ -47,15 +44,6 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>(),
     override fun handleServerErrorState(serverErrorException: ResultModel.ServerErrorException?) {
         super.handleServerErrorState(serverErrorException)
         fragmentBinding.btnLoginOTable.visible(true)
-    }
-
-    override fun onBackPress() {
-        if (fragmentBinding.wvLogin.isVisible) {
-            redirectLoginOTable(false)
-            viewModel.setIsLoading(false)
-            return
-        }
-        baseActivity.finish()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -97,6 +85,5 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>(),
         }
 
     }
-
 
 }

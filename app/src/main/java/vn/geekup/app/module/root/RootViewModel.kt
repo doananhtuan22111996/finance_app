@@ -9,19 +9,4 @@ class RootViewModel(
 ) : BaseViewModel(networkChange) {
 
     val isLoggedIn: MutableLiveData<Boolean> = MutableLiveData()
-
-//     fun isRootViewReadyFunc(): Boolean {
-//         viewModelScope.launch {
-//             flow {
-//                 delay(2000)
-//                 emit(true)
-//             }.collectLatest {
-//
-//             }
-//         }
-//
-//        return true
-//    }
-
-
 }

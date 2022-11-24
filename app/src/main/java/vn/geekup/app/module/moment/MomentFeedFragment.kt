@@ -1,23 +1,17 @@
 package vn.geekup.app.module.moment
 
 import android.os.Bundle
-import android.text.Html
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
-import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
-import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import vn.geekup.app.R
 import vn.geekup.app.base.BaseFragment
-import vn.geekup.app.base.list.PagingLoadStateAdapter
+import vn.geekup.app.base.PagingLoadStateAdapter
 import vn.geekup.app.databinding.FragmentMomentFeedBinding
 import vn.geekup.app.module.main.MainFragment
 import vn.geekup.app.utils.*

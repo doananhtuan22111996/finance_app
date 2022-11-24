@@ -30,7 +30,11 @@ open class WebViewOTableClient : WebViewClient() {
         }
     }
 
-    open fun setIsLoading(isLoading: Boolean) {}
+    open fun setIsLoading(isLoading: Boolean) {
+        // TODO handle
+    }
 
-    open fun loginSuccess(otableToken: String) {}
+    open fun loginSuccess(otableToken: String) {
+        // TODO handle
+    }
 }

@@ -62,16 +62,14 @@ class MainFragment : BaseFragment<RootViewModel, FragmentMainBinding>() {
         navController.removeOnDestinationChangedListener(destinationChangedListener)
     }
 
-    fun setOnChildFragmentListener(onChildFragmentListener: OnChildFragmentListener) {
-        this.onChildFragmentListener = onChildFragmentListener
-    }
-
-    fun onClickBottomNavigation(view: View) {
+    private fun onClickBottomNavigation(view: View) {
         selectedBottomNavigation(view)
-        when (view.id) {
-            R.id.lnHome -> keepInstanceBackStacks(R.id.momentFeedFragment)
-            else -> keepInstanceBackStacks(R.id.momentFeedFragment)
-        }
+        // TODO need to handle keepInstantNavigation
+//        when (view.id) {
+//            R.id.lnHome -> keepInstanceBackStacks(R.id.momentFeedFragment)
+//            else -> keepInstanceBackStacks(R.id.momentFeedFragment)
+//        }
+        keepInstanceBackStacks(R.id.momentFeedFragment)
     }
 
     fun bottomNavigationState(isShow: Boolean) {
@@ -109,10 +107,12 @@ class MainFragment : BaseFragment<RootViewModel, FragmentMainBinding>() {
     }
 
     private fun getViewDestination(@IdRes navId: Int): View {
-        return when (navId) {
-            R.id.momentFeedFragment -> fragmentBinding.bottomNavigation.lnHome
-            else -> fragmentBinding.bottomNavigation.lnHome
-        }
+        // TODO need to handle keepInstantNavigation
+//        return when (navId) {
+//            R.id.momentFeedFragment -> fragmentBinding.bottomNavigation.lnHome
+//            else -> fragmentBinding.bottomNavigation.lnHome
+//        }
+        return fragmentBinding.bottomNavigation.lnHome
     }
 
     @SuppressLint("RestrictedApi")

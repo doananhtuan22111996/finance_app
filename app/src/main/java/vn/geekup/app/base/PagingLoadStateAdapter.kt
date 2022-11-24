@@ -1,4 +1,4 @@
-package vn.geekup.app.base.list
+package vn.geekup.app.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

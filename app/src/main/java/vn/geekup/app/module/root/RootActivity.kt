@@ -1,7 +1,6 @@
 package vn.geekup.app.module.root
 
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -20,7 +19,6 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>() {
 
     override val viewModel: RootViewModel by viewModel()
 
-    private var onBackPressListener: OnBackPressListener? = null
     private lateinit var navController: NavController
 
     override fun provideViewModelClass(): Class<RootViewModel> {
@@ -39,6 +37,7 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>() {
     }
 
     override fun onInitLayout(savedInstanceState: Bundle?) {
+        // TODO handle layout
     }
 
     override fun bindViewModel() {
@@ -48,18 +47,6 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>() {
             redirectAuth(it)
         }
 
-    }
-
-    override fun onBackPressed() {
-        if (navController.currentDestination?.id == R.id.loginFragment) {
-            onBackPressListener?.onBackPress()
-            return
-        }
-        super.onBackPressed()
-    }
-
-    fun setOnBackPressListener(listener: OnBackPressListener) {
-        this.onBackPressListener = listener
     }
 
     private fun setupRootNavigation(root: RootNavigation) {
@@ -83,10 +70,6 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>() {
         navHostFragment.navController.graph = graph
     }
 
-    fun popToLogin() {
-        navController.navigate(R.id.popToLoginFragment)
-    }
-
     fun redirectMain() {
         redirectAuth(isLoggedIn = true)
     }
@@ -98,9 +81,4 @@ class RootActivity : BaseActivity<RootViewModel, ActivityRootBinding>() {
             setupRootNavigation(RootNavigation.Login)
         }
     }
-
-    interface OnBackPressListener {
-        fun onBackPress()
-    }
-
 }

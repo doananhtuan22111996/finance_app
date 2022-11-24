@@ -12,8 +12,7 @@ import vn.geekup.app.domain.usecase.AuthUseCase
 import vn.geekup.app.network.NetworkChange
 
 class LoginViewModel(
-    networkChange: NetworkChange,
-    private val authUseCase: AuthUseCase
+    networkChange: NetworkChange, private val authUseCase: AuthUseCase
 ) : BaseViewModel(networkChange) {
 
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -38,28 +37,9 @@ class LoginViewModel(
                         isLoading.value = false
                         executingServerErrorException(it)
                     }
-                    else -> {}
-                }
-            }
-        }
-    }
-
-    fun loginWithTravel() {
-        viewModelScope.launch {
-            authUseCase.loginWithTravel().collectLatest {
-                Timber.e("Thread View Model Collect: ${Thread.currentThread().name}")
-                isLoading.value = it is ResultModel.Loading
-                when (it) {
-                    is ResultModel.Success -> {
-                        isLoading.value = false
-                        authUseCase.saveToken(it.data?.token ?: "", it.data?.refreshToken ?: "")
-                        login.value = it.data?.token?.isNotEmpty()
+                    else -> {
+                        // TODO handle
                     }
-                    is ResultModel.ServerErrorException -> {
-                        isLoading.value = false
-                        executingServerErrorException(it)
-                    }
-                    else -> {}
                 }
             }
         }
