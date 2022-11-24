@@ -68,5 +68,6 @@
     <string name="profile_the_ranger_next_level">%1$d to %2$s</string>
     <string name="hide">Hide</string>
     <string name="retry">Retry</string>
+    <string name="please_load_again">Please Load Again!</string>
 
 </resources>

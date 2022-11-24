@@ -13,6 +13,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion versions.application.compileSdkVersion
+    namespace 'vn.geekup.app'
 
     defaultConfig {
         applicationId "vn.geekup.app"
@@ -57,9 +58,7 @@ android {
             Properties configProps = new Properties()
             configProps.load(project.rootProject.file("env.${context.name}.properties").newDataInputStream())
             context.applicationId configProps.getProperty("application.id")
-            context.manifestPlaceholders = [
-                    applicationName: configProps.getProperty("application.name"),
-            ]
+            context.manifestPlaceholders = [applicationName: configProps.getProperty("application.name"),]
         }
 
         dev {
@@ -69,6 +68,11 @@ android {
         prod {
             dimension "mode"
             loadConfig(productFlavors.prod)
+        }
+    }
+    packagingOptions {
+        resources {
+            excludes += ['LICENSE.txt', 'META-INF/DEPENDENCIES', 'META-INF/ASL2.0', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/services/javax.annotation.processing.Processor', 'META-INF/jersey-module-version']
         }
     }
     android.variantFilter { variant ->
@@ -83,20 +87,9 @@ android {
             configProps.load(project.rootProject.file("env.${variant.flavorName}.properties").newDataInputStream())
             def appName = configProps.getProperty("application.name")
             def formattedDate = new Date().format('yyyyddMMHHmm')
-//            def newApkName = "${appName.toLowerCase().replace(" ", "_")}_${formattedDate}.apk"
-            def newApkName = "${appName.toLowerCase().replace(" ", "_")}.apk"
+            def newApkName = "${appName.toLowerCase().replace(" ", "_")}_${formattedDate}.apk"
             outputFileName = new File(newApkName)
         }
-    }
-
-    packagingOptions {
-        exclude 'LICENSE.txt'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/services/javax.annotation.processing.Processor'
-        exclude 'META-INF/jersey-module-version'
     }
 
     compileOptions {

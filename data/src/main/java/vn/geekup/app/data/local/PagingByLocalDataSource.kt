@@ -57,7 +57,6 @@ abstract class PagingByLocalDataSource<RequestType : Any, ResultType : Any, remo
                         // receive from the Reddit API to fetch the next or previous page.
                         val remoteKey = getRemoteKey(state)
 
-
                         // We must explicitly check if the page key is null when appending, since the
                         // Reddit API informs the end of the list by returning null for page key, but
                         // passing a null key to Reddit API will fetch the initial page.
@@ -97,7 +96,7 @@ abstract class PagingByLocalDataSource<RequestType : Any, ResultType : Any, remo
                             ResultModel.ServerErrorException::class.java
                         ) ?: ResultModel.ServerErrorException(
                             code = CODE_999,
-                            message = "Network somthings wrong!!!"
+                            message = "Network somethings wrong!!!"
                         )
                         MediatorResult.Error(Throwable(message = result.message))
                     } catch (e: Exception) {
@@ -111,5 +110,4 @@ abstract class PagingByLocalDataSource<RequestType : Any, ResultType : Any, remo
             return MediatorResult.Error(e)
         }
     }
-
 }
