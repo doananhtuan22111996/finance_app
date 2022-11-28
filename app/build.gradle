@@ -1,15 +1,45 @@
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 // Load keystore
-def keystorePropertiesFile = rootProject.file("keystore.properties");
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def keystorePropertiesFileDev = rootProject.file("keystore.dev.properties")
+def keystorePropertiesDev = new Properties()
+keystorePropertiesDev.load(new FileInputStream(keystorePropertiesFileDev))
+
+def keystorePropertiesFileProd = rootProject.file("keystore.prod.properties")
+def keystorePropertiesProd = new Properties()
+keystorePropertiesProd.load(new FileInputStream(keystorePropertiesFileProd))
+
+def getCurrentFlavor() {
+//    Gradle gradle = getGradle()
+    String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
+
+    Pattern pattern
+
+    if (tskReqStr.contains("assemble")) pattern = Pattern.compile("assemble(\\w+)(Release|Debug)") else if (tskReqStr.contains("bundle")) pattern = Pattern.compile("bundle(\\w+)(Release|Debug)") else pattern = Pattern.compile("generate(\\w+)(Release|Debug)")
+
+    println "Gradle task: ----->" + tskReqStr
+
+    Matcher matcher = pattern.matcher(tskReqStr)
+
+    if (matcher.find()) {
+        println matcher.group(1).toLowerCase()
+        return matcher.group(1).toLowerCase()
+    } else {
+        println "NO MATCH FOUND"
+        return ""
+    }
+}
 
 android {
     compileSdkVersion versions.application.compileSdkVersion
@@ -29,11 +59,17 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile file(keystoreProperties['KEY_FILE'])
-            storePassword keystoreProperties['KEY_PASS']
-            keyAlias keystoreProperties['KEY_ALIAS']
-            keyPassword keystoreProperties['KEY_PASS']
+        dev {
+            storeFile file(keystorePropertiesDev['KEY_FILE'])
+            storePassword keystorePropertiesDev['KEY_PASS']
+            keyAlias keystorePropertiesDev['KEY_ALIAS']
+            keyPassword keystorePropertiesDev['KEY_PASS']
+        }
+        prod {
+            storeFile file(keystorePropertiesProd['KEY_FILE'])
+            storePassword keystorePropertiesProd['KEY_PASS']
+            keyAlias keystorePropertiesProd['KEY_ALIAS']
+            keyPassword keystorePropertiesProd['KEY_PASS']
         }
     }
 
@@ -42,13 +78,14 @@ android {
             debuggable true
             shrinkResources false
             minifyEnabled false
+            signingConfig getCurrentFlavor() == 'prod' ? signingConfigs.prod : signingConfigs.dev
         }
         release {
             debuggable false
             shrinkResources true
             minifyEnabled true
-            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig getCurrentFlavor() == 'prod' ? signingConfigs.prod : signingConfigs.dev
         }
     }
     flavorDimensions "mode"
@@ -56,39 +93,27 @@ android {
 
         ext.loadConfig = { context ->
             Properties configProps = new Properties()
+            println "productFlavors: ----->" + context.name
             configProps.load(project.rootProject.file("env.${context.name}.properties").newDataInputStream())
             context.applicationId configProps.getProperty("application.id")
-            context.manifestPlaceholders = [applicationName: configProps.getProperty("application.name"),]
+            println "applicationId: ----->" + configProps.getProperty("application.id")
+            context.manifestPlaceholders = [applicationName: configProps.getProperty("application.name")]
         }
 
         dev {
             dimension "mode"
             loadConfig(productFlavors.dev)
         }
+
         prod {
             dimension "mode"
             loadConfig(productFlavors.prod)
         }
     }
+
     packagingOptions {
         resources {
             excludes += ['LICENSE.txt', 'META-INF/DEPENDENCIES', 'META-INF/ASL2.0', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/services/javax.annotation.processing.Processor', 'META-INF/jersey-module-version']
-        }
-    }
-    android.variantFilter { variant ->
-        if (variant.buildType.name == 'release' && variant.getFlavors().get(0).name == 'dev') {
-            variant.setIgnore(true)
-        }
-    }
-
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            Properties configProps = new Properties()
-            configProps.load(project.rootProject.file("env.${variant.flavorName}.properties").newDataInputStream())
-            def appName = configProps.getProperty("application.name")
-            def formattedDate = new Date().format('yyyyddMMHHmm')
-            def newApkName = "${appName.toLowerCase().replace(" ", "_")}_${formattedDate}.apk"
-            outputFileName = new File(newApkName)
         }
     }
 
@@ -102,6 +127,7 @@ android {
         dataBinding true
         viewBinding true
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -133,6 +159,10 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$versions.androidX.paging"
 
     implementation "org.jsoup:jsoup:${versions.anothers.jsoup}"
+
+    implementation platform("com.google.firebase:firebase-bom:${versions.firebase.bom}")
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 }
 
 kapt {

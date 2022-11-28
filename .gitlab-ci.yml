@@ -63,62 +63,56 @@
 
 stages:
   - sonarqube
-  - build
+  - apk-dev
+  - apk-prod
+  - dev-apk-distribute
+  - prod-apk-distribute
 
-## Check App linting
-#lintDataRelease:
-#  interruptible: true
-#  stage: data
-#  tags:
-#    - sandroid-shell
-#  script:
-#    - ./gradlew -Pci --console=plain :data:lintProdRelease -PbuildDir=lint
-#  artifacts:
-#    paths:
-#      - data/lint/reports/
-#  after_script:
-#    - echo "Execute lintDataRelease completed!!!"
-#  only:
-#    - merge_request
-#    - main
-#
-## Check App linting
-#lintAppRelease:
-#  interruptible: true
-#  stage: app
-#  tags:
-#    - sandroid-shell
-#  script:
-#    - ./gradlew -Pci --console=plain :app:lintProdRelease -PbuildDir=lint
-#  artifacts:
-#    paths:
-#      - app/lint/reports/
-#  after_script:
-#    - echo "Execute lintAppRelease completed!!!"
-#  only:
-#    - merge_request
-#    - main
+variables:
+  ANDROID_PROPERTIES_DEV: $ANDROID_DEV_PROPERTIES
+  ANDROID_ENV_PROPERTIES_DEV: $ANDROID_ENV_DEV_PROPERTIES
+  ANDROID_KEYSTORE_DEV: $ANDROID_KEYSTORE_DEV
+  ANDROID_PROPERTIES_PROD: $ANDROID_PROD_PROPERTIES
+  ANDROID_ENV_PROPERTIES_PROD: $ANDROID_ENV_PROD_PROPERTIES
+  ANDROID_KEYSTORE_PROD: $ANDROID_KEYSTORE_PROD
 
-# Make Project
-assembleRelease:
-  variables:
-    ANDROID_KEYSTORE: $ANDROID_KEYSTORE
-    ANDROID_PROD_PROPERTIES: $ANDROID_PROD_PROPERTIES
-    ANDROID_DEV_PROPERTIES: $ANDROID_DEV_PROPERTIES
-    ANDROID_KEYSTORE_PROPERTIES: $ANDROID_KEYSTORE_PROPERTIES
+before_script:
+  - echo -n ${ANDROID_KEYSTORE_DEV} | base64 -d > skeleton-keystore-dev.jks
+  - echo -n ${ANDROID_ENV_PROPERTIES_DEV} | base64 -d > env.dev.properties
+  - echo -n ${ANDROID_PROPERTIES_DEV} | base64 -d > keystore.dev.properties
+  - echo -n ${ANDROID_KEYSTORE_PROD} | base64 -d > skeleton-keystore-prod.jks
+  - echo -n ${ANDROID_ENV_PROPERTIES_PROD} | base64 -d > env.prod.properties
+  - echo -n ${ANDROID_PROPERTIES_PROD} | base64 -d > keystore.prod.properties
+
+  # Make Project
+apk-dev:
+  image: cimg/android:2022.09.2-browsers
   interruptible: true
-  stage: build
+  stage: apk-dev
   tags:
-    - sandroid-shell
+    - sAndroid-docker
   script:
-    - echo -n ${ANDROID_KEYSTORE} | base64 -d > skeleton-key-store.jks
-    - echo -n ${ANDROID_PROD_PROPERTIES} | base64 -d > env.prod.properties
-    - echo -n ${ANDROID_DEV_PROPERTIES} | base64 -d > env.dev.properties
-    - echo -n ${ANDROID_KEYSTORE_PROPERTIES} | base64 -d > keystore.properties
-    - ./gradlew assembleProdRelease
+    - ./gradlew app:assembleDevRelease
   artifacts:
     paths:
-      - app/build/outputs/apk/prod/release/skeleton_prod.apk
+      - app/build/outputs/apk/dev/release/app-dev-release.apk
+  after_script:
+    - echo "Execute assembleRelease completed!!!"
+  only:
+    - merge_request
+    - main
+
+apk-prod:
+  image: cimg/android:2022.09.2-browsers
+  interruptible: true
+  stage: apk-prod
+  tags:
+    - sAndroid-docker
+  script:
+    - ./gradlew app:assembleProdRelease
+  artifacts:
+    paths:
+      - app/build/outputs/apk/prod/release/app-prod-release.apk
   after_script:
     - echo "Execute assembleRelease completed!!!"
   only:
@@ -127,9 +121,10 @@ assembleRelease:
 
 # Sonarqube
 sonarqubeRelease:
+  image: sonarsource/sonar-scanner-cli:latest
   stage: sonarqube
   tags:
-    - sandroid-shell
+    - sAndroid-docker
   script:
     - sonar-scanner
   after_script:
@@ -137,3 +132,41 @@ sonarqubeRelease:
   only:
     - merge_request
     - main
+
+dev-apk-distribute:
+  interruptible: true
+  variables:
+    FIREBASE_APP_ID: $FIREBASE_APP_DEV_ID
+  stage: dev-apk-distribute
+  tags:
+    - sandroid-shell
+  script:
+    - ./gradlew app:assembleDevRelease
+    - firebase appdistribution:distribute app/build/outputs/apk/dev/release/app-dev-release.apk --app ${FIREBASE_APP_ID} --groups "gu-mobile"
+  artifacts:
+    paths:
+      - app/build/outputs/apk/dev/release/app-dev-release.apk
+  after_script:
+      - echo "Execute assembleRelease completed!!!"
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^dev\/\d+.\d+.\d+\/\d+/
+
+prod-apk-distribute:
+  interruptible: true
+  variables:
+    FIREBASE_APP_ID: $FIREBASE_APP_PROD_ID
+  stage: prod-apk-distribute
+  tags:
+    - sandroid-shell
+  script:
+    - ./gradlew app:assembleProdRelease
+    - firebase appdistribution:distribute app/build/outputs/apk/prod/release/app-prod-release.apk --app ${FIREBASE_APP_ID} --groups "gu-mobile"
+  artifacts:
+    paths:
+      - app/build/outputs/apk/prod/release/app-prod-release.apk
+  after_script:
+    - echo "Execute assembleRelease completed!!!"
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^prod\/\d+.\d+.\d+\/\d+/

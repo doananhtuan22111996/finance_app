@@ -2,7 +2,8 @@
 /.gradle/
 /build
 /local.properties
-keystore.properties
+keystore.dev.properties
+keystore.prod.properties
 env.prod.properties
 env.dev.properties
 *.jks
