@@ -1,6 +1,18 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Features
+- [Gitlab CI] + set versionCode, versionName by tag
+
+
+<a name="prod/1.0.7/1"></a>
+## [prod/1.0.7/1] - 2022-11-28
+
+<a name="dev/1.0.7/1"></a>
+## [dev/1.0.7/1] - 2022-11-28
+### Features
+- + config firebase env, + config gradlew env, + firebase cd
+
 
 <a name="v1.0.6"></a>
 ## [v1.0.6] - 2022-10-11
@@ -49,7 +61,9 @@
 <a name="v1.0.0"></a>
 ## v1.0.0 - 2022-07-27
 
-[Unreleased]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.6...HEAD
+[Unreleased]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/prod/1.0.7/1...HEAD
+[prod/1.0.7/1]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/dev/1.0.7/1...prod/1.0.7/1
+[dev/1.0.7/1]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.6...dev/1.0.7/1
 [v1.0.6]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.5...v1.0.6
 [v1.0.5]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.4...v1.0.5
 [v1.0.4]: https://gitlab.geekup.io/gu_mobile/android/skeleton/compare/v1.0.3...v1.0.4
