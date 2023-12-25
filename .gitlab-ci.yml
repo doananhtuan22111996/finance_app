@@ -1,0 +1,180 @@
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Android.gitlab-ci.yml
+
+# Read more about this script on this blog post https://about.gitlab.com/2018/10/24/setting-up-gitlab-ci-for-android-projects/, by Jason Lenny
+# If you are interested in using Android with FastLane for publishing take a look at the Android-Fastlane template.
+
+#image: openjdk:11-jdk
+#
+#variables:
+#  # ANDROID_COMPILE_SDK is the version of Android you're compiling with.
+#  # It should match compileSdkVersion.
+#  ANDROID_COMPILE_SDK: "30"
+#
+#  # ANDROID_BUILD_TOOLS is the version of the Android build tools you are using.
+#  # It should match buildToolsVersion.
+#  ANDROID_BUILD_TOOLS: "30.0.3"
+#
+#  # It's what version of the command line tools we're going to download from the official site.
+#  # Official Site-> https://developer.android.com/studio/index.html
+#  # There, look down below at the cli tools only, sdk tools package is of format:
+#  #        commandlinetools-os_type-ANDROID_SDK_TOOLS_latest.zip
+#  # when the script was last modified for latest compileSdkVersion, it was which is written down below
+#  ANDROID_SDK_TOOLS: "8512546"
+#
+## Packages installation before running script
+#before_script:
+#  - apt-get --quiet update --yes
+#  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
+#
+#  # Setup path as ANDROID_HOME for moving/exporting the downloaded sdk into it
+#  - export ANDROID_HOME="${PWD}/android-home"
+#  # Create a new directory at specified location
+#  - install -d $ANDROID_HOME
+#  # Here we are installing androidSDK tools from official source,
+#  # (the key thing here is the url from where you are downloading these sdk tool for command line, so please do note this url pattern there and here as well)
+#  # after that unzipping those tools and
+#  # then running a series of SDK manager commands to install necessary android SDK packages that'll allow the app to build
+#  - wget --output-document=$ANDROID_HOME/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
+#  # move to the archive at ANDROID_HOME
+#  - pushd $ANDROID_HOME
+#  - unzip -d cmdline-tools cmdline-tools.zip
+#  - pushd cmdline-tools
+#  # since commandline tools version 7583922 the root folder is named "cmdline-tools" so we rename it if necessary
+#  - mv cmdline-tools tools || true
+#  - popd
+#  - popd
+#  - export PATH=$PATH:${ANDROID_HOME}/cmdline-tools/tools/bin/
+#
+#  # Nothing fancy here, just checking sdkManager version
+#  - sdkmanager --version
+#
+#  # use yes to accept all licenses
+#  - yes | sdkmanager --licenses || true
+#  - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
+#  - sdkmanager "platform-tools"
+#  - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
+#
+#  # Not necessary, but just for surity
+#  - chmod +x ./gradlew
+
+stages:
+  - sonarqube
+  - apk-dev
+  - apk-prod
+  - dev-apk-distribute
+  - prod-apk-distribute
+
+variables:
+  ANDROID_PROPERTIES_DEV: $ANDROID_DEV_PROPERTIES
+  ANDROID_ENV_PROPERTIES_DEV: $ANDROID_ENV_DEV_PROPERTIES
+  ANDROID_KEYSTORE_DEV: $ANDROID_KEYSTORE_DEV
+  ANDROID_PROPERTIES_PROD: $ANDROID_PROD_PROPERTIES
+  ANDROID_ENV_PROPERTIES_PROD: $ANDROID_ENV_PROD_PROPERTIES
+  ANDROID_KEYSTORE_PROD: $ANDROID_KEYSTORE_PROD
+
+before_script:
+  - echo -n ${ANDROID_KEYSTORE_DEV} | base64 -d > skeleton-keystore-dev.jks
+  - echo -n ${ANDROID_ENV_PROPERTIES_DEV} | base64 -d > env.dev.properties
+  - echo -n ${ANDROID_PROPERTIES_DEV} | base64 -d > keystore.dev.properties
+  - echo -n ${ANDROID_KEYSTORE_PROD} | base64 -d > skeleton-keystore-prod.jks
+  - echo -n ${ANDROID_ENV_PROPERTIES_PROD} | base64 -d > env.prod.properties
+  - echo -n ${ANDROID_PROPERTIES_PROD} | base64 -d > keystore.prod.properties
+
+  # Make Project
+apk-dev:
+  image: cimg/android:2022.09.2-browsers
+  interruptible: true
+  stage: apk-dev
+  tags:
+    - sAndroid-docker
+  script:
+    - ./gradlew app:assembleDevRelease
+  artifacts:
+    paths:
+      - app/build/outputs/apk/dev/release/app-dev-release.apk
+  after_script:
+    - echo "Execute assembleRelease completed!!!"
+  only:
+    - merge_request
+    - main
+
+apk-prod:
+  image: cimg/android:2022.09.2-browsers
+  interruptible: true
+  stage: apk-prod
+  tags:
+    - sAndroid-docker
+  script:
+    - ./gradlew app:assembleProdRelease
+  artifacts:
+    paths:
+      - app/build/outputs/apk/prod/release/app-prod-release.apk
+  after_script:
+    - echo "Execute assembleRelease completed!!!"
+  only:
+    - merge_request
+    - main
+
+# Sonarqube
+sonarqubeRelease:
+  image: sonarsource/sonar-scanner-cli:latest
+  stage: sonarqube
+  tags:
+    - sAndroid-docker
+  script:
+    - sonar-scanner
+  after_script:
+    - echo "Execute sonarqubeRelease completed!!!"
+  only:
+    - merge_request
+    - main
+
+dev-apk-distribute:
+  interruptible: true
+  variables:
+    FIREBASE_APP_ID: $FIREBASE_APP_DEV_ID
+  stage: dev-apk-distribute
+  tags:
+    - sandroid-shell
+  script:
+    - build_name="$(cut -d'/' -f2 <<<"$CI_COMMIT_TAG")"
+    - echo $build_name
+    - build_number="$(cut -d'/' -f3 <<<"$CI_COMMIT_TAG")"
+    - echo $build_number
+    - ./gradlew app:assembleDevRelease -PversionName=$build_name -PversionCode=$build_number
+    - firebase appdistribution:distribute app/build/outputs/apk/dev/release/app-dev-release.apk --app ${FIREBASE_APP_ID} --groups "gu-mobile"
+  artifacts:
+    paths:
+      - app/build/outputs/apk/dev/release/app-dev-release.apk
+  after_script:
+      - echo "Execute assembleRelease completed!!!"
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^dev\/\d+.\d+.\d+\/\d+/
+
+prod-apk-distribute:
+  interruptible: true
+  variables:
+    FIREBASE_APP_ID: $FIREBASE_APP_PROD_ID
+  stage: prod-apk-distribute
+  tags:
+    - sandroid-shell
+  script:
+    - build_name="$(cut -d'/' -f2 <<<"$CI_COMMIT_TAG")"
+    - echo $build_name
+    - build_number="$(cut -d'/' -f3 <<<"$CI_COMMIT_TAG")"
+    - echo $build_number
+    - ./gradlew app:assembleProdRelease -PversionName=$build_name -PversionCode=$build_number
+    - firebase appdistribution:distribute app/build/outputs/apk/prod/release/app-prod-release.apk --app ${FIREBASE_APP_ID} --groups "gu-mobile"
+  artifacts:
+    paths:
+      - app/build/outputs/apk/prod/release/app-prod-release.apk
+  after_script:
+    - echo "Execute assembleRelease completed!!!"
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^prod\/\d+.\d+.\d+\/\d+/

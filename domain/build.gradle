@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id 'kotlin-kapt'
+}
+
+dependencies {
+    api "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin.kotlinStdlib}"
+    api "com.google.code.gson:gson:${versions.google.gson}"
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.reactive.coroutine}"
+
+    api("androidx.paging:paging-common:${versions.androidX.paging}")
+
+    api "androidx.room:room-common:${versions.database.room}"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}

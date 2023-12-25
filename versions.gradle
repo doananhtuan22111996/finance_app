@@ -1,0 +1,97 @@
+ext.versions = [:]
+def versions = [:]
+
+versions.application = [
+        compileSdkVersion: 33,
+        minSdkVersion    : 26,
+        targetSdkVersion : 33,
+        versionCode      : 1,
+        versionName      : '1.0.7'
+]
+
+versions.test = [
+        junit        : '4.13.2',
+        androidxJunit: '1.1.4',
+        espressoCore : '3.5.0'
+]
+
+versions.debug = [
+        stetho            : '1.6.0',
+        loggingInterceptor: '5.0.0-alpha.9',
+        timber            : '5.0.1'
+]
+
+versions.plugin = [
+        buildTool    : '7.3.0',
+        glux         : '0.0.7',
+        googleService: '4.3.10',
+        crashlytics  : '2.7.1'
+]
+
+versions.kotlin = [
+        kotlinStdlib: '1.7.20'
+]
+
+versions.androidX = [
+        coreKTX         : '1.9.0',
+        appcompat       : '1.5.1',
+        navigation      : '2.5.3',
+        constraintlayout: '2.1.4',
+        lifecycle       : '2.5.1',
+        recyclerview    : '1.1.0',
+        cardview        : '1.0.0',
+        splashScreen    : '1.0.0',
+        paging          : '3.1.1',
+]
+
+versions.google = [
+        material: '1.7.0',
+        gson    : '2.10'
+]
+
+versions.di = [
+        dagger: '2.38.1',
+        hilt  : '2.41',
+        koin  : '3.3.0',
+]
+
+versions.reactive = [
+        rxandroid: '3.0.0',
+        rxkotlin : '3.0.1',
+        coroutine: '1.6.4',
+]
+
+versions.local = [
+        preferance      : '0.25',
+        securePreference: '1.1.0-alpha04'
+]
+
+versions.database = [
+        room: '2.4.3',
+]
+
+versions.httpClient = [
+        retrofit: '2.9.0',
+        cookie  : 'v1.0.1'
+]
+
+versions.resource = [
+        glux                : '1.0.0',
+        glide               : '4.13.2',
+        glideTransformations: '4.3.0',
+        coil                : '2.2.2'
+]
+
+versions.swipeLayout = [
+        swiperefreshlayout: '1.1.0'
+]
+
+versions.firebase = [
+        bom: '31.1.0'
+]
+
+versions.anothers = [
+        jsoup: '1.15.3',
+]
+
+ext.versions = versions

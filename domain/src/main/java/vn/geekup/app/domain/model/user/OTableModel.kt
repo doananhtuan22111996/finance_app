@@ -1,0 +1,8 @@
+package vn.geekup.app.domain.model.user
+
+import vn.geekup.app.domain.model.general.BaseModel
+
+data class OTableModel(
+    val token: String? = "",
+    val refreshToken: String? = ""
+) : BaseModel()
