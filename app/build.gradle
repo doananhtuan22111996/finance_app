@@ -20,7 +20,7 @@ def keystorePropertiesFileProd = rootProject.file("keystore.prod.properties")
 def keystorePropertiesProd = new Properties()
 keystorePropertiesProd.load(new FileInputStream(keystorePropertiesFileProd))
 
-def getCurrentFlavor() {
+def getCurrentFlavor = {
 //    Gradle gradle = getGradle()
     String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
 
@@ -42,11 +42,11 @@ def getCurrentFlavor() {
 }
 
 android {
-    compileSdkVersion versions.application.compileSdkVersion
-    namespace 'vn.geekup.app'
+    namespace "vn.geekup.app"
 
     defaultConfig {
         applicationId "vn.geekup.app"
+        compileSdk versions.application.compileSdkVersion
         minSdkVersion versions.application.minSdkVersion
         targetSdkVersion versions.application.targetSdkVersion
         versionCode rootProject.hasProperty('versionCode') ? rootProject.versionCode.toInteger() : versions.application.versionCode
@@ -77,17 +77,17 @@ android {
             debuggable true
             shrinkResources false
             minifyEnabled false
-            signingConfig getCurrentFlavor() == 'prod' ? signingConfigs.prod : signingConfigs.dev
+            signingConfig getCurrentFlavor.toString() == 'prod' ? signingConfigs.prod : signingConfigs.dev
         }
         release {
             debuggable false
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig getCurrentFlavor() == 'prod' ? signingConfigs.prod : signingConfigs.dev
+            signingConfig getCurrentFlavor.toString() == 'prod' ? signingConfigs.prod : signingConfigs.dev
         }
     }
-    flavorDimensions "mode"
+    flavorDimensions += "environment"
     productFlavors {
 
         ext.loadConfig = { context ->
@@ -100,12 +100,12 @@ android {
         }
 
         dev {
-            dimension "mode"
+            dimension "environment"
             loadConfig(productFlavors.dev)
         }
 
         prod {
-            dimension "mode"
+            dimension "environment"
             loadConfig(productFlavors.prod)
         }
     }
@@ -137,6 +137,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:${versions.test.androidxJunit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.test.espressoCore}"
 
+    implementation project(path: ':domain')
     implementation project(path: ':data')
 
     // Image
@@ -146,6 +147,7 @@ dependencies {
     implementation "com.google.android.material:material:${versions.google.material}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidX.constraintlayout}"
     implementation "androidx.core:core-splashscreen:${versions.androidX.splashScreen}"
+    implementation "androidx.appcompat:appcompat:$versions.androidX.appcompat"
 
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidX.navigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${versions.androidX.navigation}"
@@ -157,11 +159,18 @@ dependencies {
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:$versions.androidX.paging"
 
+    implementation "com.google.code.gson:gson:${versions.google.gson}"
     implementation "org.jsoup:jsoup:${versions.anothers.jsoup}"
 
     implementation platform("com.google.firebase:firebase-bom:${versions.firebase.bom}")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+    // DI
+    implementation("io.insert-koin:koin-android:$versions.di.koin")
+
+    // debug
+    implementation "com.jakewharton.timber:timber:${versions.debug.timber}"
 }
 
 kapt {
@@ -169,7 +178,9 @@ kapt {
 }
 
 gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xmaxerrs" << "500" // or whatever number you want
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs << "-Xmaxerrs" << "500" // or whatever number you want
+        }
     }
 }

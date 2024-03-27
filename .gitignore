@@ -1,9 +1,7 @@
 /.idea/
 /.gradle/
 /build
+/lib
 /local.properties
-keystore.dev.properties
-keystore.prod.properties
-env.prod.properties
-env.dev.properties
+*.properties
 *.jks
