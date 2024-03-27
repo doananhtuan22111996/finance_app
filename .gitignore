@@ -1,6 +1,7 @@
 /.idea/
 /.gradle/
 /build
+/lib
 /local.properties
 keystore.dev.properties
 keystore.prod.properties
