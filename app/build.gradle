@@ -20,7 +20,7 @@ def keystorePropertiesFileProd = rootProject.file("keystore.prod.properties")
 def keystorePropertiesProd = new Properties()
 keystorePropertiesProd.load(new FileInputStream(keystorePropertiesFileProd))
 
-def getCurrentFlavor() {
+def getCurrentFlavor = {
 //    Gradle gradle = getGradle()
     String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
 
@@ -42,6 +42,7 @@ def getCurrentFlavor() {
 }
 
 android {
+    namespace "vn.geekup.app"
 
     defaultConfig {
         applicationId "vn.geekup.app"
@@ -76,14 +77,14 @@ android {
             debuggable true
             shrinkResources false
             minifyEnabled false
-            signingConfig getCurrentFlavor() == 'prod' ? signingConfigs.prod : signingConfigs.dev
+            signingConfig getCurrentFlavor.toString() == 'prod' ? signingConfigs.prod : signingConfigs.dev
         }
         release {
             debuggable false
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig getCurrentFlavor() == 'prod' ? signingConfigs.prod : signingConfigs.dev
+            signingConfig getCurrentFlavor.toString() == 'prod' ? signingConfigs.prod : signingConfigs.dev
         }
     }
     flavorDimensions += "environment"

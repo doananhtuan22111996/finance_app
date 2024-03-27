@@ -4,7 +4,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.use
 import timber.log.Timber
 import vn.geekup.data.Config

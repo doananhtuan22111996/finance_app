@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    namespace 'vn.geekup.data'
 
     defaultConfig {
         compileSdk versions.application.compileSdkVersion
@@ -40,10 +41,7 @@ android {
             dimension "environment"
             loadConfig(productFlavors.dev)
         }
-        staging {
-            dimension "environment"
-            loadConfig(productFlavors.staging)
-        }
+
         prod {
             dimension "environment"
             loadConfig(productFlavors.prod)

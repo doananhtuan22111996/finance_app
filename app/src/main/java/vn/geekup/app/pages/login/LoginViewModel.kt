@@ -8,7 +8,6 @@ import timber.log.Timber
 import vn.geekup.app.base.BaseViewModel
 import vn.geekup.domain.dto.OTableRequestBody
 import vn.geekup.domain.model.general.ResultModel
-import vn.geekup.domain.model.user.RoleAuthority
 import vn.geekup.domain.usecase.AuthUseCase
 import vn.geekup.app.network.NetworkChange
 
@@ -46,5 +45,4 @@ class LoginViewModel(
             }
         }
     }
-
 }
