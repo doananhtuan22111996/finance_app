@@ -86,11 +86,9 @@ before_script:
 
   # Make Project
 apk-dev:
-  image: cimg/android:2022.09.2-browsers
-  interruptible: true
   stage: apk-dev
   tags:
-    - sAndroid-docker
+    - gu-android-shell
   script:
     - ./gradlew app:assembleDevRelease
   artifacts:
@@ -103,11 +101,9 @@ apk-dev:
     - main
 
 apk-prod:
-  image: cimg/android:2022.09.2-browsers
-  interruptible: true
   stage: apk-prod
   tags:
-    - sAndroid-docker
+    - gu-android-shell
   script:
     - ./gradlew app:assembleProdRelease
   artifacts:
@@ -121,10 +117,9 @@ apk-prod:
 
 # Sonarqube
 sonarqubeRelease:
-  image: sonarsource/sonar-scanner-cli:latest
   stage: sonarqube
   tags:
-    - sAndroid-docker
+    - gu-android-shell
   script:
     - sonar-scanner
   after_script:
@@ -134,12 +129,11 @@ sonarqubeRelease:
     - main
 
 dev-apk-distribute:
-  interruptible: true
   variables:
     FIREBASE_APP_ID: $FIREBASE_APP_DEV_ID
   stage: dev-apk-distribute
   tags:
-    - sandroid-shell
+    - gu-android-shell
   script:
     - build_name="$(cut -d'/' -f2 <<<"$CI_COMMIT_TAG")"
     - echo $build_name
@@ -151,18 +145,17 @@ dev-apk-distribute:
     paths:
       - app/build/outputs/apk/dev/release/app-dev-release.apk
   after_script:
-      - echo "Execute assembleRelease completed!!!"
+    - echo "Execute assembleRelease completed!!!"
   only:
     variables:
       - $CI_COMMIT_TAG =~ /^dev\/\d+.\d+.\d+\/\d+/
 
 prod-apk-distribute:
-  interruptible: true
   variables:
     FIREBASE_APP_ID: $FIREBASE_APP_PROD_ID
   stage: prod-apk-distribute
   tags:
-    - sandroid-shell
+    - gu-android-shell
   script:
     - build_name="$(cut -d'/' -f2 <<<"$CI_COMMIT_TAG")"
     - echo $build_name
