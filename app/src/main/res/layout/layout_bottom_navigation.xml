@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <variable
-            name="fragment"
-            type="vn.geekup.app.pages.main.MainFragment" />
-    </data>
 
     <FrameLayout
         android:id="@+id/frShadow"
@@ -46,7 +38,7 @@
                     android:id="@+id/tvMomentFeeds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/nav_moment_feeds"
+                    android:text="@string/home"
                     android:textAppearance="@style/TextAppearance.FontPath.Gilroy.Body_13_SemiBold"
                     android:textColor="@color/color_bottom_nav_selector" />
 

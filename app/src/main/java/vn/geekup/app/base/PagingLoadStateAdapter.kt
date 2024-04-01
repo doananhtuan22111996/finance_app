@@ -11,30 +11,31 @@ import vn.geekup.app.utils.visible
 class PagingLoadStateAdapter(private val retryFunc: (() -> Unit)? = null) :
     LoadStateAdapter<PagingLoadStateAdapter.PagingStateViewHolder>() {
     override fun onCreateViewHolder(
-        parent: ViewGroup,
-        loadState: LoadState
+        parent: ViewGroup, loadState: LoadState
     ): PagingStateViewHolder {
-
-        val viewBinding = ItemPagingStateBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+        return PagingStateViewHolder(
+            ItemPagingStateBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
-        return PagingStateViewHolder(viewBinding)
     }
 
     override fun onBindViewHolder(holder: PagingStateViewHolder, loadState: LoadState) {
-        holder.bindData()
+        holder.bind()
     }
 
     inner class PagingStateViewHolder(private val viewBinding: ItemPagingStateBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
-        fun bindData() {
-            viewBinding.rlParentProgressbar.visible(loadState is LoadState.Loading)
+        fun bind() {
+            viewBinding.progressBar.visible(loadState is LoadState.Loading)
             viewBinding.lnRetry.visible(loadState is LoadState.Error)
             viewBinding.btnRetry.setOnClickListener {
                 retryFunc?.invoke()
             }
+            if (loadState is LoadState.Error) {
+                viewBinding.tvRetry.text = (loadState as LoadState.Error).error.message
+            }
+
         }
     }
 }
