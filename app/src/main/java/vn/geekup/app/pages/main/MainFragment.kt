@@ -1,84 +1,32 @@
 package vn.geekup.app.pages.main
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IdRes
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import vn.geekup.app.R
 import vn.geekup.app.base.BaseFragment
 import vn.geekup.app.databinding.FragmentMainBinding
 import vn.geekup.app.pages.root.RootViewModel
-import vn.geekup.app.utils.setAppColorStatusBar
-import vn.geekup.app.utils.visible
 
-class MainFragment : BaseFragment<RootViewModel, FragmentMainBinding>() {
+class MainFragment : BaseFragment<RootViewModel, MainViewModel, FragmentMainBinding>() {
+    override val sharedViewModel: RootViewModel by activityViewModel()
 
-    // Listener for MomentFeedFragment
-    interface OnChildFragmentListener {
-        fun onAutoReloadMomentFeed()
-    }
+    override val viewModel: MainViewModel by viewModel()
 
-    override val viewModel: RootViewModel by viewModel()
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMainBinding =
+        FragmentMainBinding::inflate
 
-    private var onChildFragmentListener: OnChildFragmentListener? = null
-
-    private var destinationChangedListener: NavController.OnDestinationChangedListener =
-        NavController.OnDestinationChangedListener { _, destination, _ ->
-            selectedBottomNavigation(getViewDestination(destination.id))
-        }
-
-    override fun initViewModelByActivityLifecycle(): Boolean = true
-
-    override fun provideViewBinding(parent: ViewGroup): FragmentMainBinding =
-        FragmentMainBinding.inflate(layoutInflater, parent, true)
-
-    override fun onInitLayout(view: View, savedInstanceState: Bundle?) {
-        baseActivity.setAppColorStatusBar(R.color.color_white)
-        fragmentBinding.fragment = this
+    override fun onInit(view: View, savedInstanceState: Bundle?) {
+        viewBinding.fragment = this
         setupMainNavigation()
-        selectedBottomNavigation(fragmentBinding.bottomNavigation.lnHome)
-//        fragmentBinding.bottomNavigation.lnHome.setDoubleClickListener(singleListener = {
-//            onClickBottomNavigation(it)
-//        }, doubleListener = this::setAutoReloadMomentFeed)
 
-        fragmentBinding.bottomNavigation.lnHome.setOnClickListener {
-            onClickBottomNavigation(it)
-            setAutoReloadMomentFeed()
+        viewBinding.bottomNavigation.lnHome.setOnClickListener {
+
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        navController.addOnDestinationChangedListener(destinationChangedListener)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        navController.removeOnDestinationChangedListener(destinationChangedListener)
-    }
-
-    private fun onClickBottomNavigation(view: View) {
-        selectedBottomNavigation(view)
-        // TODO need to handle keepInstantNavigation
-//        when (view.id) {
-//            R.id.lnHome -> keepInstanceBackStacks(R.id.momentFeedFragment)
-//            else -> keepInstanceBackStacks(R.id.momentFeedFragment)
-//        }
-        keepInstanceBackStacks(R.id.momentFeedFragment)
-    }
-
-    fun bottomNavigationState(isShow: Boolean) {
-        fragmentBinding.bottomNavigation.root.visible(isShow)
-    }
-
-    // Double click Button Home -> Auto Reload page and scroll to Top
-    private fun setAutoReloadMomentFeed() {
-        onChildFragmentListener?.onAutoReloadMomentFeed()
     }
 
     private fun setupMainNavigation() {
@@ -94,39 +42,5 @@ class MainFragment : BaseFragment<RootViewModel, FragmentMainBinding>() {
 //      navArgument
 //    ) // This is where you pass the bundle data from Activity to StartDestination
         navHostFragment.navController.graph = graph
-    }
-
-    private fun selectedBottomNavigation(view: View) {
-        if (view.id == R.id.lnHome) {
-            fragmentBinding.bottomNavigation.ivHome.isSelected = true
-            fragmentBinding.bottomNavigation.tvMomentFeeds.isSelected = true
-        } else {
-            fragmentBinding.bottomNavigation.ivHome.isSelected = false
-            fragmentBinding.bottomNavigation.tvMomentFeeds.isSelected = false
-        }
-    }
-
-    private fun getViewDestination(@IdRes navId: Int): View {
-        // TODO need to handle keepInstantNavigation
-//        return when (navId) {
-//            R.id.momentFeedFragment -> fragmentBinding.bottomNavigation.lnHome
-//            else -> fragmentBinding.bottomNavigation.lnHome
-//        }
-        return fragmentBinding.bottomNavigation.lnHome
-    }
-
-    // TODO Deprecated keepInstanceBackStacks
-    @SuppressLint("RestrictedApi")
-    @Deprecated("Deprecated")
-    private fun keepInstanceBackStacks(@IdRes navId: Int) {
-//        if (navController.currentDestination?.id == navId) return
-//        val navBackStackEntry = navController.backQueue.find {
-//            it.destination.id == navId
-//        }
-//        if (navBackStackEntry != null) {
-//            navController.popBackStack(navId, false)
-//        } else {
-//            navController.navigate(navId)
-//        }
     }
 }

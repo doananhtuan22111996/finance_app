@@ -2,56 +2,48 @@ package vn.geekup.app.base
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewbinding.ViewBinding
+import timber.log.Timber
 import vn.geekup.app.databinding.ActivityBaseBinding
-import vn.geekup.domain.model.general.ResultModel
-import vn.geekup.app.network.NetworkStatus
+import vn.geekup.domain.model.ResultModel
 import vn.geekup.app.utils.setupViewClickHideKeyBoard
 
-abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
 
-  protected abstract val viewModel: VM
-  protected lateinit var activityBinding: VB
-  private lateinit var baseBinding: ActivityBaseBinding
+    protected abstract val viewModel: VM
 
-  abstract fun provideViewModelClass(): Class<VM>
+    protected lateinit var viewBinding: ActivityBaseBinding
+        private set
 
-  abstract fun provideViewBinding(parent: ViewGroup): VB
+    abstract fun onInit(savedInstanceState: Bundle?)
 
-  abstract fun onInitLayout(savedInstanceState: Bundle?)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewBinding = ActivityBaseBinding.inflate(layoutInflater)
+        super.setContentView(viewBinding.root)
+        window?.setupViewClickHideKeyBoard(viewBinding.root)
+        onInit(savedInstanceState)
+        bindViewModel()
+    }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    baseBinding = ActivityBaseBinding.inflate(layoutInflater)
-    super.setContentView(baseBinding.root)
-    activityBinding = provideViewBinding(baseBinding.flBase)
-    window?.setupViewClickHideKeyBoard(baseBinding.root)
-    viewModel.loadIntentBundle(intent)
-    onInitLayout(savedInstanceState)
-    bindViewModel()
-  }
+    @CallSuper
+    open fun bindViewModel() {
+        viewModel.loadingOverlay.observe(this, this::executeLoadingOverlay)
+        viewModel.exception.observe(this, this::executeAppException)
+    }
 
-  @CallSuper
-  open fun bindViewModel() {
-    viewModel.fullScreenLoadingState.observe(this, this::handleViewFullScreenLoading)
-    viewModel.networkChangeState.observe(this, this::handleNetworkChangeStatus)
-    viewModel.errorServerState.observe(this, this::handleServerErrorState)
-  }
+    private fun executeAppException(appException: ResultModel.AppException?) {
+        appException?.run {
+            Timber.d("executeAppException: ${this.message}")
+            Toast.makeText(this@BaseActivity, this.message ?: "", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-  open fun handleViewFullScreenLoading(isFullScreenLoading: Boolean) {
-    baseBinding.layoutLoading.rlParentProgressbar.visibility =
-      if (isFullScreenLoading) View.VISIBLE else View.GONE
-  }
-
-  open fun handleNetworkChangeStatus(networkStatus: NetworkStatus) {
-    // Do nothing, maybe handle at subclass
-  }
-
-  open fun handleServerErrorState(serverErrorException: ResultModel.ServerErrorException?) {
-    Toast.makeText(this, serverErrorException?.message.toString(), Toast.LENGTH_SHORT).show()
-  }
+    private fun executeLoadingOverlay(isLoading: Boolean) {
+        Timber.d("executeLoadingOverlay: $isLoading")
+        viewBinding.layoutLoading.rlProgressbar.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
+    }
 }

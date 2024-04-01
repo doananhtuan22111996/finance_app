@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><!--TODO set domain security of app-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">2b549b15-ab77-4a6e-b0e8-03981c070748.mock.pstmn.io</domain>
+    </domain-config>
+</network-security-config>

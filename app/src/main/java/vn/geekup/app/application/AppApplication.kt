@@ -8,16 +8,12 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
-import vn.geekup.data.Config
-import vn.geekup.data.localModules
-import vn.geekup.data.remoteModules
-import vn.geekup.data.repository.repositoryModules
-import vn.geekup.app.di.applicationModules
-import vn.geekup.app.di.useCaseModules
-import vn.geekup.app.di.viewModelModules
+import vn.geekup.app.BuildConfig
+import vn.geekup.app.di.AppModules
+import vn.geekup.app.di.DomainModules
+import vn.geekup.data.DataModule
 
 class AppApplication : Application() {
-
     companion object {
         private val instanceLock = Any()
         var instance: AppApplication? = null
@@ -32,44 +28,42 @@ class AppApplication : Application() {
 
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
-            //your code here
+            //TODO your code here
         }
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
-            //your code here
+            //TODO your code here
         }
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        setupDebug()
+        setupTimber()
         startKoin()
-
         ProcessLifecycleOwner.get().lifecycle.addObserver(defaultLifecycleObserver)
     }
 
-    private fun setupDebug() {
+    private fun setupTimber() {
         Timber.plant(Timber.DebugTree())
-        Config.setup(this)
     }
 
     private fun startKoin() {
         startKoin {
             // use Koin logger
-            if (Config.isDebug) {
+            if (BuildConfig.DEBUG) {
                 androidLogger()
             }
             androidContext(this@AppApplication)
             // declare modules
             modules(
-                applicationModules,
-                localModules,
-                remoteModules,
-                repositoryModules,
-                useCaseModules,
-                viewModelModules,
+                AppModules.applicationModules,
+                AppModules.viewModelModules,
+                DataModule.localModules,
+                DataModule.remoteModules,
+                DataModule.repositoryModules,
+                DomainModules.useCaseModules,
             )
         }
     }

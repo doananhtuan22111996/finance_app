@@ -4,21 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import vn.geekup.data.dao.RemoteKeyDao
-import vn.geekup.data.dao.TravelDao
-import vn.geekup.data.dao.converter.MomentTypeConverter
-import vn.geekup.domain.model.general.RemoteKey
-import vn.geekup.domain.model.moment.MomentModel
+import vn.geekup.data.dao.ItemDao
+import vn.geekup.data.model.ItemRaw
 
 @Database(
-    entities = [MomentModel::class, RemoteKey::class],
-    version = AppDatabase.DB_VERSION,
-    exportSchema = false
+    entities = [ItemRaw::class], version = AppDatabase.DB_VERSION, exportSchema = false
 )
-//@TypeConverters(MomentTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
@@ -34,8 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun build(context: Context) =
             Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DB_NAME)
-                .addMigrations(MIGRATION_1_TO_2)
-                .build()
+                .addMigrations(MIGRATION_1_TO_2).build()
 
         private val MIGRATION_1_TO_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -44,6 +36,5 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 
-    abstract fun remoteKeyDao(): RemoteKeyDao
-    abstract fun travelFeedDao(): TravelDao
+    abstract fun itemDao(): ItemDao
 }

@@ -1,44 +1,22 @@
 package vn.geekup.app.base
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import timber.log.Timber
-import vn.geekup.data.Config.ErrorCode.CODE_999
-import vn.geekup.domain.model.general.ResultModel
-import vn.geekup.app.network.NetworkChange
+import vn.geekup.domain.model.ResultModel
 
-open class BaseViewModel(
-    networkChange: NetworkChange,
-//  protected val authUseCase: AuthUseCase,
-) : ViewModel() {
+open class BaseViewModel : ViewModel() {
 
-    val networkChangeState = networkChange.networkState()
-    private val fullScreenLoadingLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val fullScreenLoadingState: LiveData<Boolean> = fullScreenLoadingLiveData
+    val loadingOverlay: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val exception: MutableLiveData<ResultModel.AppException?> = MutableLiveData(null)
 
-    val forceToLogin: MutableLiveData<Boolean> = MutableLiveData(false)
-    val errorServerState: MutableLiveData<ResultModel.ServerErrorException?> = MutableLiveData()
-
-    fun fullScreenLoading(isLoading: Boolean) {
-        fullScreenLoadingLiveData.postValue(isLoading)
+    fun setLoadingOverlay(isLoading: Boolean) {
+        loadingOverlay.value = isLoading
     }
 
-    open fun loadArgumentsBundle(bundle: Bundle?) {
-        //Do Nothing, handle in subclass
+    fun setAppException(error: ResultModel.AppException?) {
+        if (error == null) return
+        exception.value = error
+        Timber.e("executeException: ${error.message}")
     }
-
-    open fun loadIntentBundle(intent: Intent?) {
-        //Do Nothing, handle in subclass
-    }
-
-    fun executingServerErrorException(serverError: ResultModel.ServerErrorException?) {
-        if (serverError == null) return
-        forceToLogin.value = serverError.code == CODE_999
-        errorServerState.value = serverError
-        Timber.d("Executed Server Failure: ${serverError.message}")
-    }
-
 }
