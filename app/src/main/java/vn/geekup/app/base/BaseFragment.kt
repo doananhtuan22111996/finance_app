@@ -4,70 +4,54 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.viewbinding.ViewBinding
-import vn.geekup.app.databinding.FragmentBaseBinding
-import vn.geekup.domain.model.general.ResultModel
-import vn.geekup.app.network.NetworkStatus
 import vn.geekup.app.utils.setupViewClickHideKeyBoard
 
-abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>: Fragment() {
+abstract class BaseFragment<SharedVM : BaseViewModel, VM : BaseViewModel, VB : ViewBinding> :
+    Fragment() {
 
-  protected lateinit var baseActivity: BaseActivity<*, *>
+    protected abstract val sharedViewModel: SharedVM
 
-  protected abstract val viewModel: VM
+    protected abstract val viewModel: VM
 
-  protected lateinit var fragmentBinding: VB
-  protected lateinit var navController: NavController
-  private lateinit var baseBinding: FragmentBaseBinding
+    protected lateinit var viewBinding: VB
 
-  var tagFrag: String? = null
+    protected lateinit var navController: NavController
 
-  abstract fun provideViewBinding(parent: ViewGroup): VB
+    abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 
-  abstract fun onInitLayout(view: View, savedInstanceState: Bundle?)
+    abstract fun onInit(view: View, savedInstanceState: Bundle?)
 
-  open fun initViewModelByActivityLifecycle(): Boolean {
-    return false
-  }
+    @CallSuper
+    open fun bindViewModel() {
+        viewModel.loadingOverlay.observe(viewLifecycleOwner) {
+            sharedViewModel.setLoadingOverlay(it)
+        }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    baseActivity = activity as BaseActivity<*, *>
-  }
+        viewModel.exception.observe(viewLifecycleOwner) {
+            it?.run {
+                sharedViewModel.setAppException(this)
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    baseBinding = FragmentBaseBinding.inflate(layoutInflater)
-    fragmentBinding = provideViewBinding(baseBinding.root)
-    baseActivity.window?.setupViewClickHideKeyBoard(baseBinding.root)
-    return baseBinding.root
-  }
+            }
+        }
+    }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    viewModel.loadArgumentsBundle(arguments)
-    navController = Navigation.findNavController(view)
-    onInitLayout(view, savedInstanceState)
-    bindViewModel()
-  }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        viewBinding = bindingInflater.invoke(inflater, container, false)
+        (activity as BaseActivity<*>).window?.setupViewClickHideKeyBoard(viewBinding.root)
+        return viewBinding.root
+    }
 
-  @CallSuper
-  open fun bindViewModel() {
-    viewModel.networkChangeState.observe(viewLifecycleOwner, this::handleNetworkChangeStatus)
-
-    viewModel.errorServerState.observe(viewLifecycleOwner, this::handleServerErrorState)
-  }
-
-  open fun handleNetworkChangeStatus(networkStatus: NetworkStatus) {
-    // Do nothing, maybe handle at subclass
-  }
-
-  open fun handleServerErrorState(serverErrorException: ResultModel.ServerErrorException?) {
-    Toast.makeText(context, serverErrorException?.message.toString(), Toast.LENGTH_SHORT).show()
-  }
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
+        onInit(view, savedInstanceState)
+        bindViewModel()
+    }
 }

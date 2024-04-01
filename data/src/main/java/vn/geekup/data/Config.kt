@@ -1,18 +1,6 @@
 package vn.geekup.data
 
-import android.content.Context
-import com.facebook.stetho.Stetho
-
-object Config {
-
-    const val PLATFORM = "android"
-
-    fun setup(context: Context?) {
-        if (isDebug) {
-            Stetho.initializeWithDefaults(context)
-        }
-    }
-
+internal object Config {
     val isDebug: Boolean
         get() = BuildConfig.DEBUG
 
@@ -36,13 +24,12 @@ object Config {
         const val CODE_204 = 204
         const val CODE_302 = 302
         const val CODE_401 = 401 //Unauthorized
-        const val CODE_400 = 400 //Unauthorized
-        const val CODE_999 = 999 //Unauthorized
+        const val CODE_400 = 400
+        const val CODE_999 = 999
     }
 
-    object SharePreference{
-         const val KEY_AUTH_TOKEN = "key_auth_token"
-         const val KEY_AUTH_REFRESH_TOKEN = "key_auth_refresh_token"
-         const val KEY_AUTH_INFO_INDICATOR = "key_auth_info_indicator"
+    object SharePreference {
+        const val KEY_AUTH_TOKEN = "key_auth_token"
+        const val KEY_AUTH_REFRESH_TOKEN = "key_auth_refresh_token"
     }
 }

@@ -32,9 +32,6 @@ android {
             Properties configProps = new Properties()
             configProps.load(project.rootProject.file("env.${context.name}.properties").newDataInputStream())
             context.buildConfigField("String", "MAIN_DOMAIN", configProps.getProperty('main.domain'))
-            context.buildConfigField("String", "OTABLE_ENDPOINT", configProps.getProperty('otable.endpoint'))
-            context.buildConfigField("String", "SPARROW_ID", configProps.getProperty('sparrow.id'))
-            context.buildConfigField("String", "SPARROW_URL_STORE", configProps.getProperty('sparrow.url_store'))
         }
 
         dev {
@@ -71,8 +68,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.test.espressoCore}"
 
     // debug
-    implementation "com.facebook.stetho:stetho:${versions.debug.stetho}"
-    implementation "com.facebook.stetho:stetho-okhttp3:${versions.debug.stetho}"
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.debug.loggingInterceptor"
 
     // local

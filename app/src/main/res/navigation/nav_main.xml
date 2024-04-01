@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/momentFeedFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/momentFeedFragment"
-        android:name="vn.geekup.app.pages.moment.MomentFeedFragment"
-        android:label="fragment_feed_moment"
-        tools:layout="@layout/fragment_moment_feed" />
+        android:id="@+id/homeFragment"
+        android:label="fragment_home"
+        android:name="vn.geekup.app.pages.home.HomeFragment"
+        tools:layout="@layout/fragment_home" />
 
 </navigation>

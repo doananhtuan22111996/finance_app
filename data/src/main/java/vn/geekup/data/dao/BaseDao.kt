@@ -3,29 +3,14 @@ package vn.geekup.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import vn.geekup.domain.model.general.BaseModel
-import vn.geekup.domain.model.general.RemoteKey
+import vn.geekup.data.model.BaseRaw
 
 @Dao
-interface BaseDao<T : BaseModel> {
+interface BaseDao<Raw : BaseRaw> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(obj: List<T>)
+    suspend fun insertAll(obj: List<Raw>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg obj: T)
-}
-
-@Dao
-interface RemoteKeyDao : BaseDao<RemoteKey> {
-
-    @Query("SELECT * FROM RemoteKey WHERE repoId = :id")
-    fun remoteKeysId(id: String): RemoteKey?
-
-    @Query("SELECT * FROM RemoteKey")
-    fun remoteKeysIdAll(): List<RemoteKey>
-
-    @Query("DELETE FROM RemoteKey")
-    suspend fun delete()
+    suspend fun insert(vararg obj: Raw)
 }

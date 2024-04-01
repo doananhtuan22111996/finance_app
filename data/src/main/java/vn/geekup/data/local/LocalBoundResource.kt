@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
 import vn.geekup.data.Config.ErrorCode.CODE_999
-import vn.geekup.domain.model.general.ResultModel
+import vn.geekup.domain.model.ResultModel
 
 abstract class LocalBoundResource<RequestType, ResultType> {
 
@@ -16,7 +16,7 @@ abstract class LocalBoundResource<RequestType, ResultType> {
     fun build() = flow {
         emit(ResultModel.Loading)
         emit(
-            fetchFromDatabase() ?: ResultModel.ServerErrorException(
+            fetchFromDatabase() ?: ResultModel.AppException(
                 message = "Somethings wrong",
                 code = CODE_999
             )
@@ -35,7 +35,7 @@ abstract class LocalBoundResource<RequestType, ResultType> {
         } catch (e: Exception) {
             Timber.e("Data fetched from Database Error: ${e.message}")
             val errorMsg = "Not match in Database"
-            ResultModel.ServerErrorException(
+            ResultModel.AppException(
                 message = errorMsg,
                 code = CODE_999
             )
