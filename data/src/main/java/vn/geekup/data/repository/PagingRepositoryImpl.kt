@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
+import timber.log.Timber
 import vn.geekup.data.local.dao.ItemDao
 import vn.geekup.data.local.PagingByLocalDataSource
 import vn.geekup.data.network.PagingByNetworkDataSource
@@ -29,6 +30,7 @@ class PagingRepositoryImpl(
             override suspend fun processResponse(request: ListResponse<ItemRaw>?): ListResponse<ItemModel> {
                 // Save Data to Room
                 itemDao.insertAll(request?.data ?: listOf())
+                Timber.d("processResponse: ${itemDao.getItems()}")
                 return ListResponse(data = request?.data?.map {
                     it.raw2Model() as ItemModel
                 }, metadata = request?.metadata)

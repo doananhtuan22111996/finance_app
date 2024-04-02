@@ -7,7 +7,7 @@ import vn.geekup.domain.model.ItemModel
 
 @Entity
 data class ItemRaw(
-    @PrimaryKey val id: String = "",
+    @PrimaryKey val id: Int = 0,
     val name: String? = "",
 ) : BaseRaw() {
 
