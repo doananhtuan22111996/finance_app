@@ -22,7 +22,8 @@
     <string name="login_share_and_store_every_moments_at_geek_up">Share and store every moments at GEEK Up.</string>
     <string name="login">Login</string>
     <string name="retry">Retry</string>
-    <string name="home">Home</string>
     <string name="please_load_again">Please Load again!</string>
+    <string name="paging_local">Paging Local</string>
+    <string name="paging_network">Paging Network</string>
 
 </resources>

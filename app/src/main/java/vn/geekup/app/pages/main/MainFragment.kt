@@ -24,8 +24,14 @@ class MainFragment : BaseFragment<RootViewModel, MainViewModel, FragmentMainBind
         viewBinding.fragment = this
         setupMainNavigation()
 
-        viewBinding.bottomNavigation.lnHome.setOnClickListener {
+        viewBinding.bottomNavigation.lnPagingNetwork.setOnClickListener {
+            if (navController.currentDestination?.id == R.id.homeFragment) return@setOnClickListener
+            navController.navigate(R.id.navigateToHomeNetwork)
+        }
 
+        viewBinding.bottomNavigation.lnPagingLocal.setOnClickListener {
+            if (navController.currentDestination?.id == R.id.homeLocalFragment) return@setOnClickListener
+            navController.navigate(R.id.navigateToHomeLocal)
         }
     }
 

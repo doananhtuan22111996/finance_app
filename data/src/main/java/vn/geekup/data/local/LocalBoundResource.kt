@@ -9,41 +9,31 @@ import vn.geekup.domain.model.ResultModel
 
 abstract class LocalBoundResource<RequestType, ResultType> {
 
-    private val TAG = LocalBoundResource::class.java.name
-
-    private var result: ResultModel<ResultType>? = null
-
     fun build() = flow {
         emit(ResultModel.Loading)
         emit(
             fetchFromDatabase() ?: ResultModel.AppException(
-                message = "Somethings wrong",
-                code = CODE_999
+                message = "LocalBoundResource somethings wrong", code = CODE_999
             )
         )
+        emit(ResultModel.Done)
     }.flowOn(Dispatchers.IO)
 
 
     private suspend fun fetchFromDatabase(): ResultModel<ResultType>? {
-        result = try {
-
-            val response = loadDB()
-
-            Timber.e("Data fetched from Database ${if (response != null) "Success" else "Failure"}")
-
-            processResponse(response)
+        return try {
+            val response = onDatabase()
+            Timber.d("Data fetched from Database ${if (response != null) "Success" else "Failure"}")
+            ResultModel.Success(data = processResponse(response))
         } catch (e: Exception) {
             Timber.e("Data fetched from Database Error: ${e.message}")
-            val errorMsg = "Not match in Database"
             ResultModel.AppException(
-                message = errorMsg,
-                code = CODE_999
+                message = e.message, code = CODE_999
             )
         }
-        return result
     }
 
-    abstract suspend fun loadDB(): RequestType
+    abstract suspend fun onDatabase(): RequestType
 
-    abstract suspend fun processResponse(request: RequestType?): ResultModel.Success<ResultType>?
+    abstract suspend fun processResponse(request: RequestType?): ResultType?
 }

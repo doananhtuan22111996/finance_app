@@ -1,4 +1,4 @@
-package vn.geekup.data.dao.converter
+package vn.geekup.data.local.dao.converter
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
@@ -19,5 +19,4 @@ open class BaseTypeConverter<T> {
     }
 
     private fun String.Companion.empty() = ""
-
 }

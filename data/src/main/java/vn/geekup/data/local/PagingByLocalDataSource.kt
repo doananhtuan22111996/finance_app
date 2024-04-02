@@ -1,17 +1,62 @@
 package vn.geekup.data.local
 
-import androidx.paging.*
-import com.google.gson.Gson
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import retrofit2.Response
 import timber.log.Timber
-import vn.geekup.data.model.ListResponse
-import vn.geekup.domain.model.ResultModel
-import vn.geekup.data.Config
-import vn.geekup.data.Config.ErrorCode.CODE_999
-import java.io.IOException
+
+/**
+ * A [PagingSource] that uses the before/after keys returned in page requests.
+ *
+ * @see PagingByLocalDataSource
+ */
+abstract class PagingByLocalDataSource<RequestType : Any, ResultType : Any>(private val dispatcher: CoroutineDispatcher = Dispatchers.IO) :
+    PagingSource<Int, ResultType>() {
+
+    override fun getRefreshKey(state: PagingState<Int, ResultType>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            // This loads starting from previous page, but since PagingConfig.initialLoadSize spans
+            // multiple pages, the initial load will still load items centered around
+            // anchorPosition. This also prevents needing to immediately launch prepend due to
+            // prefetchDistance.
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            Timber.d(
+                "anchorPosition: prevKey - ${anchorPage?.prevKey} --- NextKey: ${
+                    anchorPage?.nextKey
+                }"
+            )
+            state.closestPageToPosition(anchorPosition)?.prevKey
+        }
+    }
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultType> {
+        return withContext(dispatcher) {
+            try {
+                Timber.d("Load: Params: $params - Page: ${params.key}")
+                val response = onDatabase(offset = (params.key ?: 0) * params.loadSize)
+                Timber.d("PagingByLocalDataSource Success: + $response")
+                LoadResult.Page(
+                    data = processResponse(response) ?: listOf(), prevKey = null,
+                    // TODO Condition nextPage, maybe change by context API
+                    nextKey = if (response.isNotEmpty()) (params.key?.plus(1)) else null
+                )
+            } catch (e: Exception) {
+                LoadResult.Error(
+                    Throwable(
+                        e.message ?: "PagingByLocalDataSource somethings wrong!!!"
+                    )
+                )
+            }
+
+        }
+    }
+
+    abstract suspend fun onDatabase(offset: Int?): List<RequestType>
+    abstract suspend fun processResponse(request: List<RequestType>?): List<ResultType>?
+}
+
 // TODO Paging local with Room
 //
 //@OptIn(ExperimentalPagingApi::class)

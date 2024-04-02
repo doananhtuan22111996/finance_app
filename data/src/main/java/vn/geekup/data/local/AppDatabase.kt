@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import vn.geekup.data.dao.ItemDao
+import vn.geekup.data.local.dao.ItemDao
 import vn.geekup.data.model.ItemRaw
 
 @Database(

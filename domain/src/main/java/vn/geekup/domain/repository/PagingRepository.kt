@@ -8,6 +8,5 @@ interface PagingRepository {
 
     suspend fun getPagingNetwork(): Flow<PagingData<ItemModel>>
 
-    // TODO Paging Local with DataBase Room
-//    suspend fun getPagingLocal(): Flow<PagingData<ItemModel>>
+    suspend fun getPagingLocal(): Flow<PagingData<ItemModel>>
 }

@@ -1,4 +1,4 @@
-package vn.geekup.app.pages.home
+package vn.geekup.app.pages.homeLocal
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,20 +16,20 @@ import vn.geekup.app.base.PagingLoadStateAdapter
 import vn.geekup.app.databinding.FragmentHomeBinding
 import vn.geekup.app.pages.root.RootViewModel
 
-class HomeFragment : BaseFragment<RootViewModel, HomeViewModel, FragmentHomeBinding>() {
+class HomeLocalFragment : BaseFragment<RootViewModel, HomeLocalViewModel, FragmentHomeBinding>() {
 
-    private lateinit var adapter: HomeAdapter
+    private lateinit var adapter: HomeLocalAdapter
 
     override val sharedViewModel: RootViewModel by activityViewModel()
 
-    override val viewModel: HomeViewModel by viewModel()
+    override val viewModel: HomeLocalViewModel by viewModel()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding =
         FragmentHomeBinding::inflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = HomeAdapter()
+        adapter = HomeLocalAdapter()
     }
 
     override fun onInit(view: View, savedInstanceState: Bundle?) {
