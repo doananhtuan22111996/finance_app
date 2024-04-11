@@ -7,8 +7,26 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:label="fragment_home"
         android:name="vn.geekup.app.pages.home.HomeFragment"
+        android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/homeLocalFragment"
+        android:name="vn.geekup.app.pages.homeLocal.HomeLocalFragment"
+        android:label="fragment_home_local"
+        tools:layout="@layout/fragment_home" />
+
+    <action
+        android:id="@+id/navigateToHomeLocal"
+        app:destination="@id/homeLocalFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_root" />
+
+    <action
+        android:id="@+id/navigateToHomeNetwork"
+        app:destination="@id/homeFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_root" />
 
 </navigation>

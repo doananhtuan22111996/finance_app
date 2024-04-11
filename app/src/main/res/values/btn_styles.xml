@@ -31,16 +31,4 @@
     </style>
     <!--    End On Boarding-->
 
-    <!--    Moment-->
-    <style name="Widget.AppCompat.Button.Moment_Footer" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/bg_button_moment_footer_selector</item>
-        <item name="android:textAppearanceButton">
-            @style/TextAppearance.FontPath.Gilroy.Body_14_Medium
-        </item>
-        <item name="android:textColor">@color/color_text_button_moment_footer_selector</item>
-        <item name="textAllCaps">false</item>
-        <item name="android:stateListAnimator">@null</item>
-    </style>
-    <!--    End Moment-->
-
 </resources>

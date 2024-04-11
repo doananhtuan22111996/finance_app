@@ -6,6 +6,7 @@ import org.koin.dsl.module
 import vn.geekup.app.pages.login.LoginViewModel
 import vn.geekup.app.pages.root.RootViewModel
 import vn.geekup.app.network.NetworkChange
+import vn.geekup.app.pages.homeLocal.HomeLocalViewModel
 import vn.geekup.app.pages.home.HomeViewModel
 import vn.geekup.app.pages.main.MainViewModel
 
@@ -19,5 +20,6 @@ internal object AppModules {
         viewModel { LoginViewModel(get(), get()) }
         viewModel { MainViewModel() }
         viewModel { HomeViewModel(get()) }
+        viewModel { HomeLocalViewModel(get()) }
     }
 }

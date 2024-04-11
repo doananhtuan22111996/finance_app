@@ -38,7 +38,7 @@ object DataModule {
         }
 
         factory<PagingRepository> {
-            PagingRepositoryImpl(get())
+            PagingRepositoryImpl(get(), get())
         }
     }
 }

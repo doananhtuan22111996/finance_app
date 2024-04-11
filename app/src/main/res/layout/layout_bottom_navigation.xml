@@ -17,28 +17,58 @@
             android:paddingVertical="@dimen/padding_20">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/lnHome"
+                android:id="@+id/lnPagingNetwork"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/lnPagingLocal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivHome"
+                    android:id="@+id/ivNetwork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_10"
                     app:srcCompat="@drawable/ic_home_nav_selector" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvMomentFeeds"
+                    android:id="@+id/tvNetwork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home"
+                    android:text="@string/paging_network"
+                    android:textAppearance="@style/TextAppearance.FontPath.Gilroy.Body_13_SemiBold"
+                    android:textColor="@color/color_bottom_nav_selector" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/lnPagingLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lnPagingNetwork"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivLocal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_10"
+                    app:srcCompat="@drawable/ic_home_nav_selector" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLocal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/paging_local"
                     android:textAppearance="@style/TextAppearance.FontPath.Gilroy.Body_13_SemiBold"
                     android:textColor="@color/color_bottom_nav_selector" />
 

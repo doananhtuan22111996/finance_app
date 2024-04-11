@@ -1,4 +1,4 @@
-package vn.geekup.data.dao
+package vn.geekup.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

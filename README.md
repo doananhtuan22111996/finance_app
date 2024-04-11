@@ -1,6 +1,6 @@
 # Android MVVM
-    - Target Version: SDK 32
-    - Min Version: SDK 23
+    - Target Version: SDK 34
+    - Min Version: SDK 26
 ### Clean Architecture Pattern
     - App Module
     - Data Module
@@ -35,4 +35,4 @@
     - SonarQube
 
 #### What do next!
-    - Style
+    - TBU
