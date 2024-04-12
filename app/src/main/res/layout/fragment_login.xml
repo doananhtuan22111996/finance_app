@@ -29,8 +29,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_40"
-            android:text="@string/login_share_and_store_every_moments_at_geek_up"
             android:textColor="@color/color_white"
+            android:text="@string/login_page"
             app:layout_constraintBottom_toTopOf="@id/btnLoginOTable"
             app:layout_constraintEnd_toEndOf="@id/btnLoginOTable"
             app:layout_constraintStart_toStartOf="@id/btnLoginOTable" />

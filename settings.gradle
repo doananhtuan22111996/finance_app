@@ -9,3 +9,4 @@ rootProject.name = "Skeleton"
 include ':app'
 include ':domain'
 include ':data'
+include ':example'
