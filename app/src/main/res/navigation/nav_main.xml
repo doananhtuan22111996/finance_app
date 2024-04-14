@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="vn.geekup.app.pages.home.HomeFragment"
+        android:name="vn.finance.app.pages.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/homeLocalFragment"
-        android:name="vn.geekup.app.pages.homeLocal.HomeLocalFragment"
+        android:name="vn.finance.app.pages.homeLocal.HomeLocalFragment"
         android:label="fragment_home_local"
         tools:layout="@layout/fragment_home" />
 

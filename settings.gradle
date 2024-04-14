@@ -5,8 +5,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Skeleton"
+
+rootProject.name = "Finance"
 include ':app'
 include ':domain'
 include ':data'
-include ':example'
