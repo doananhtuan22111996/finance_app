@@ -4,25 +4,25 @@
     <style name="TextAppearance.FontPath.Gilroy.Medium" parent="android:TextAppearance">
         <item name="fontFamily">@font/gilroy_medium</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textColor">@color/color_4</item>
+        <item name="android:textColor">@color/color_text</item>
     </style>
 
     <style name="TextAppearance.FontPath.Gilroy.Regular" parent="android:TextAppearance">
         <item name="fontFamily">@font/gilroy_regular</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textColor">@color/color_4</item>
+        <item name="android:textColor">@color/color_text</item>
     </style>
 
     <style name="TextAppearance.FontPath.Gilroy.SemiBold" parent="android:TextAppearance">
         <item name="fontFamily">@font/gilroy_semibold</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textColor">@color/color_4</item>
+        <item name="android:textColor">@color/color_text</item>
     </style>
 
     <style name="TextAppearance.FontPath.Gilroy.Bold" parent="android:TextAppearance">
         <item name="fontFamily">@font/gilroy_bold</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textColor">@color/color_4</item>
+        <item name="android:textColor">@color/color_text</item>
     </style>
 
     <!--    ============ Match UIkit =============-->
@@ -89,16 +89,6 @@
     <style name="TextAppearance.FontPath.Gilroy.Caption_11_Medium" parent="TextAppearance.FontPath.Gilroy.Medium">
         <item name="android:textSize">@dimen/text_size_11</item>
         <item name="lineHeight">@dimen/line_height_16</item>
-    </style>
-
-    <!--====================================-->
-    <style name="TextAppearance.FontPath.Gilroy.Date_Text_Calendar" parent="TextAppearance.FontPath.Gilroy.Title_Medium">
-        <item name="android:textColor">@color/color_text_calendar_selector</item>
-        <item name="android:textColorPrimary">@color/color_4</item>
-    </style>
-
-    <style name="TextAppearance.FontPath.Gilroy.Week_Day_Calendar" parent="TextAppearance.FontPath.Gilroy.Body_14_Medium">
-        <item name="android:textColor">@color/color_5</item>
     </style>
 
 </resources>

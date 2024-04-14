@@ -9,18 +9,14 @@
         <item name="colorSecondary">@color/color_primary</item>
         <item name="colorSecondaryVariant">@color/color_primary_dark</item>
         <item name="colorOnSecondary">@color/color_on_primary</item>
-        <!-- Customize your theme here. -->
+        <!-- StatusBar -->
+        <item name="android:statusBarColor">@color/color_primary</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <style name="Theme.SkeletonTheme.NoActionBar" parent="Theme.SkeletonTheme">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-    </style>
-
-    <style name="Theme.SkeletonTheme.NoActionBar.SplashBackground" parent="Theme.SkeletonTheme.NoActionBar">
-        <item name="android:statusBarColor">@color/color_white</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowSplashscreenContent">@drawable/bg_window_splash</item>
+    <style name="Theme.SkeletonTheme.SplashScreen" parent="Theme.SkeletonTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowSplashscreenContent">@drawable/im_splash_screen</item>
     </style>
 
     <style name="Theme.MaterialComponents.DayNight.BottomSheetDialog.App" parent="Theme.MaterialComponents.DayNight.BottomSheetDialog">

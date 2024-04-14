@@ -2,11 +2,10 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-parcelize'
 }
 
 android {
-    namespace 'vn.geekup.data'
+    namespace 'vn.finance.data'
 
     defaultConfig {
         compileSdk versions.application.compileSdkVersion
@@ -46,16 +45,16 @@ android {
     }
 
     compileOptions {
-        incremental true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
 
     buildFeatures {
-        viewBinding true
+        buildConfig = true
     }
 }
 
@@ -71,7 +70,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.debug.loggingInterceptor"
 
     // local
-    implementation "androidx.room:room-ktx:${versions.database.room}"
+    implementation "androidx.room:room-runtime:${versions.database.room}"
     kapt "androidx.room:room-compiler:${versions.database.room}"
 
     implementation "androidx.room:room-paging:${versions.database.room}"
@@ -86,8 +85,4 @@ dependencies {
 
     // debug
     implementation "com.jakewharton.timber:timber:${versions.debug.timber}"
-}
-
-kapt {
-    correctErrorTypes true
 }

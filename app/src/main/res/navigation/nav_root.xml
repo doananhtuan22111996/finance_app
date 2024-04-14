@@ -21,13 +21,13 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="vn.geekup.app.pages.login.LoginFragment"
+        android:name="vn.finance.app.pages.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="vn.geekup.app.pages.main.MainFragment"
+        android:name="vn.finance.app.pages.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
 

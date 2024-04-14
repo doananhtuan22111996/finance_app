@@ -5,8 +5,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-parcelize'
-    id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
 }
@@ -42,10 +40,10 @@ def getCurrentFlavor = {
 }
 
 android {
-    namespace "vn.geekup.app"
+    namespace "vn.finance.app"
 
     defaultConfig {
-        applicationId "vn.geekup.app"
+        applicationId "vn.finance.app"
         compileSdk versions.application.compileSdkVersion
         minSdkVersion versions.application.minSdkVersion
         targetSdkVersion versions.application.targetSdkVersion
@@ -110,29 +108,25 @@ android {
         }
     }
 
-    packagingOptions {
-        resources {
-            excludes += ['LICENSE.txt', 'META-INF/DEPENDENCIES', 'META-INF/ASL2.0', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/services/javax.annotation.processing.Processor', 'META-INF/jersey-module-version']
-        }
-    }
-
     compileOptions {
-        incremental true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    buildFeatures {
-        dataBinding true
-        viewBinding true
     }
 
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        // Include plugin id 'kotlin-kapt' if enable dataBinding
+        dataBinding true
+        viewBinding true
+        buildConfig = true
+    }
 }
 
 dependencies {
+    implementation 'androidx.activity:activity:1.8.0'
     testImplementation "junit:junit:${versions.test.junit}"
     androidTestImplementation "androidx.test.ext:junit:${versions.test.androidxJunit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.test.espressoCore}"
@@ -171,16 +165,4 @@ dependencies {
 
     // debug
     implementation "com.jakewharton.timber:timber:${versions.debug.timber}"
-}
-
-kapt {
-    correctErrorTypes true
-}
-
-gradle.projectsEvaluated {
-    tasks.withType(JavaCompile).tap {
-        configureEach {
-            options.compilerArgs << "-Xmaxerrs" << "500" // or whatever number you want
-        }
-    }
 }
