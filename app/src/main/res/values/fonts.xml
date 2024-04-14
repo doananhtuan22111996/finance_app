@@ -26,8 +26,8 @@
     </style>
 
     <!--    ============ Match UIkit =============-->
-    <style name="TextAppearance.FontPath.Gilroy.H1" parent="TextAppearance.FontPath.Gilroy.Medium">
-        <item name="android:textSize">@dimen/text_size_24</item>
+    <style name="TextAppearance.FontPath.Gilroy.H1" parent="TextAppearance.FontPath.Gilroy.SemiBold">
+        <item name="android:textSize">@dimen/text_size_35</item>
         <item name="lineHeight">@dimen/line_height_32</item>
     </style>
 

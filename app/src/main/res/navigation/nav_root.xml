@@ -3,10 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_root"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/onBoardingFragment">
 
     <action
-        android:id="@+id/popToLoginFragment"
+        android:id="@+id/pushToOnBoardingFragment"
+        app:destination="@id/onBoardingFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_root"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/pushToLoginFragment"
         app:destination="@id/loginFragment"
         app:launchSingleTop="true"
         app:popUpTo="@id/nav_root"
@@ -18,6 +25,12 @@
         app:launchSingleTop="true"
         app:popUpTo="@id/nav_root"
         app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="vn.finance.app.pages.onBoarding.OnBoardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding" />
 
     <fragment
         android:id="@+id/loginFragment"

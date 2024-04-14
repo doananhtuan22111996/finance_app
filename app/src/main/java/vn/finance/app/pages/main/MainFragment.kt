@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import vn.finance.app.R
 import vn.finance.app.base.BaseFragment
 import vn.finance.app.databinding.FragmentMainBinding
-import vn.finance.app.pages.root.RootViewModel
+import vn.finance.app.pages.routing.RootViewModel
 
 class MainFragment : BaseFragment<RootViewModel, MainViewModel, FragmentMainBinding>() {
     override val sharedViewModel: RootViewModel by activityViewModel()
