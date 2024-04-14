@@ -126,7 +126,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.activity:activity:1.8.0'
+    implementation 'androidx.activity:activity:1.8.2'
     testImplementation "junit:junit:${versions.test.junit}"
     androidTestImplementation "androidx.test.ext:junit:${versions.test.androidxJunit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.test.espressoCore}"
@@ -165,4 +165,7 @@ dependencies {
 
     // debug
     implementation "com.jakewharton.timber:timber:${versions.debug.timber}"
+
+    // Dependencies outside
+    implementation "com.tbuonomo:dotsindicator:5.0"
 }

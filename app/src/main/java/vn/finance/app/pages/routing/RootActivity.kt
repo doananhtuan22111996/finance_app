@@ -1,4 +1,4 @@
-package vn.finance.app.pages.root
+package vn.finance.app.pages.routing
 
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -10,8 +10,10 @@ import vn.finance.app.base.BaseActivity
 class RootActivity : BaseActivity<RootViewModel>() {
 
     sealed class RootNavigation {
+        data object OnBoarding : RootNavigation()
+
         data object Login : RootNavigation()
-        data object Main : RootNavigation()
+        data object Home : RootNavigation()
     }
 
     override val viewModel: RootViewModel by viewModel()
@@ -19,7 +21,8 @@ class RootActivity : BaseActivity<RootViewModel>() {
     private lateinit var navController: NavController
 
     override fun onInit(savedInstanceState: Bundle?) {
-        setupRootNavigation(RootNavigation.Login)
+        // TODO check onBoarding did show and logged in
+        setupRootNavigation(RootNavigation.OnBoarding)
     }
 
     private fun setupRootNavigation(root: RootNavigation) {
@@ -36,6 +39,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
 //    ) // This is where you pass the bundle data from Activity to StartDestination
         // This is where you change start Destination
         val destination = when (root) {
+            is RootNavigation.OnBoarding -> R.id.onBoardingFragment
             is RootNavigation.Login -> R.id.loginFragment
             else -> R.id.mainFragment
         }

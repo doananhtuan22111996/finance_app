@@ -5,14 +5,12 @@
     <FrameLayout
         android:id="@+id/frShadow"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_bottom_navigation_shadow">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="2dp"
-            android:background="@drawable/bg_bottom_navigation"
             android:paddingHorizontal="@dimen/padding_40"
             android:paddingVertical="@dimen/padding_20">
 
@@ -40,8 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/paging_network"
-                    android:textAppearance="@style/TextAppearance.FontPath.Gilroy.Body_13_SemiBold"
-                    android:textColor="@color/color_bottom_nav_selector" />
+                    android:textAppearance="@style/TextAppearance.FontPath.Gilroy.Body_13_SemiBold" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -69,8 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/paging_local"
-                    android:textAppearance="@style/TextAppearance.FontPath.Gilroy.Body_13_SemiBold"
-                    android:textColor="@color/color_bottom_nav_selector" />
+                    android:textAppearance="@style/TextAppearance.FontPath.Gilroy.Body_13_SemiBold" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

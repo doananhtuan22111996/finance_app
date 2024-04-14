@@ -26,4 +26,12 @@
     <string name="paging_network">Paging Network</string>
     <string name="login_page">Login Page</string>
 
+    <!--    OnBoarding-->
+    <string name="title_1">The best app for manage your finance</string>
+    <string name="title_2">Simple and easy to control your money</string>
+    <string name="title_3">Your savings are safe by smat invest</string>
+    <string name="content_1">Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem semper parturient.</string>
+    <string name="content_2">Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem semper parturient.</string>
+    <string name="content_3">Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem semper parturient.</string>
+    <!--End OnBoarding-->
 </resources>

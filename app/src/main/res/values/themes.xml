@@ -19,12 +19,4 @@
         <item name="android:windowSplashscreenContent">@drawable/im_splash_screen</item>
     </style>
 
-    <style name="Theme.MaterialComponents.DayNight.BottomSheetDialog.App" parent="Theme.MaterialComponents.DayNight.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal.App</item>
-    </style>
-
-    <style name="Widget.Design.BottomSheet.Modal.App" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bg_bottom_navigation_shadow</item>
-    </style>
-
 </resources>

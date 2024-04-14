@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import vn.finance.app.pages.root.RootActivity
 
 /**
 Follow by: https://developer.android.com/develop/ui/views/launch/splash-screen/migrate

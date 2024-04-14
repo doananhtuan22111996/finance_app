@@ -1,4 +1,4 @@
-package vn.finance.app.network
+package vn.finance.app.utils.networkState
 
 import android.content.Context
 import android.net.*

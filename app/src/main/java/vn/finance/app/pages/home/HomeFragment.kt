@@ -14,7 +14,7 @@ import timber.log.Timber
 import vn.finance.app.base.BaseFragment
 import vn.finance.app.base.PagingLoadStateAdapter
 import vn.finance.app.databinding.FragmentHomeBinding
-import vn.finance.app.pages.root.RootViewModel
+import vn.finance.app.pages.routing.RootViewModel
 
 class HomeFragment : BaseFragment<RootViewModel, HomeViewModel, FragmentHomeBinding>() {
 

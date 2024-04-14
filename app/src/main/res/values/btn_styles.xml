@@ -17,7 +17,7 @@
         </item>
         <item name="android:textColor">@color/color_text</item>
         <item name="textAllCaps">false</item>
-        <item name="android:layout_height">@dimen/size_32</item>
+        <item name="android:layout_height">32dp</item>
     </style>
 
     <!--    On Boarding-->

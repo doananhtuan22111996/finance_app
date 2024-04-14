@@ -1,4 +1,4 @@
-package vn.finance.app.pages.root
+package vn.finance.app.pages.routing
 
 import vn.finance.app.base.BaseViewModel
 

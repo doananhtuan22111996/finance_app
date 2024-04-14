@@ -5,12 +5,8 @@
     <color name="color_accent">#804E89</color>
     <color name="color_on_primary">#E2E0E4</color>
 
-<!--    Background-->
+    <!--    Background-->
     <color name="color_white">#ffffff</color>
-    <color name="color_bottom_navigation">@color/color_white</color>
-    <color name="color_bottom_sheet">@color/color_white</color>
-    <color name="color_bottom_navigation_shadow">#267C8C9A</color>
-    <color name="color_input_type_shadow">#267C8C9A</color>
     <color name="color_splash">@color/color_primary</color>
 
     <!--    Bottom Navigation-->
@@ -20,4 +16,8 @@
     <!--    Text-->
     <color name="color_text">#1F2C37</color>
     <color name="color_text_hint">#78828A</color>
+
+    <!--    Selector-->
+    <color name="color_selected">@color/color_white</color>
+    <color name="color_unSelected">#78828A</color>
 </resources>
