@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.widget.ViewPager2
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -47,30 +46,24 @@ class OnBoardingFragment :
     }
 
     override fun onInit(view: View, savedInstanceState: Bundle?) {
-        with(viewBinding.vPager) {
-            adapter = this@OnBoardingFragment.adapter
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    println("PagerView selected: $position")
-                }
-            })
-        }
+        viewBinding.vPager.adapter = adapter
         viewBinding.dotIndicator.attachTo(viewBinding.vPager)
 
         pageJob = lifecycleScope.launch(Dispatchers.Main) {
             while (true) {
-                println("Pager 2 while: ${viewBinding.vPager.currentItem} --- ${adapter.itemCount}")
                 delay(2000L)
                 if (viewBinding.vPager.currentItem < adapter.itemCount - 1) {
-                    println("Pager 2 changed: ${viewBinding.vPager.currentItem}")
                     viewBinding.vPager.setCurrentItem(viewBinding.vPager.currentItem + 1, true)
                 } else if (viewBinding.vPager.currentItem == adapter.itemCount - 1) {
-                    println("Pager 2 Reset: ${viewBinding.vPager.currentItem}")
                     // Reset position = 0
                     viewBinding.vPager.setCurrentItem(0, true)
                 }
             }
+        }
+
+        viewBinding.tvSkip.setOnClickListener {
+            // TODO navigate to Login
+            // TODO set value flag onboarding -> don't show onboarding in next time
         }
     }
 
