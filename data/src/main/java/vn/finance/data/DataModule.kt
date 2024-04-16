@@ -7,11 +7,14 @@ import org.koin.dsl.module
 import retrofit2.converter.gson.GsonConverterFactory
 import vn.finance.data.local.AppDatabase
 import vn.finance.data.local.PreferenceWrapper
+import vn.finance.data.local.dao.ItemDao
 import vn.finance.data.network.TokenAuthenticator
 import vn.finance.data.repository.AuthRepositoryImpl
+import vn.finance.data.repository.OnBoardingRepositoryImpl
 import vn.finance.data.repository.PagingRepositoryImpl
 import vn.finance.data.service.ApiService
 import vn.finance.domain.repository.AuthRepository
+import vn.finance.domain.repository.OnBoardingRepository
 import vn.finance.domain.repository.PagingRepository
 
 object DataModule {
@@ -41,12 +44,16 @@ object DataModule {
     }
 
     val repositoryModules = module {
+        factory<OnBoardingRepository> {
+            OnBoardingRepositoryImpl(get<PreferenceWrapper>())
+        }
+
         factory<AuthRepository> {
-            AuthRepositoryImpl(get(), get())
+            AuthRepositoryImpl(get<ApiService>(), get<PreferenceWrapper>())
         }
 
         factory<PagingRepository> {
-            PagingRepositoryImpl(get(), get())
+            PagingRepositoryImpl(get<ApiService>(), get<ItemDao>())
         }
     }
 }

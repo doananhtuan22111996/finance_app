@@ -31,5 +31,6 @@ internal object Config {
     object SharePreference {
         const val KEY_AUTH_TOKEN = "key_auth_token"
         const val KEY_AUTH_REFRESH_TOKEN = "key_auth_refresh_token"
+        const val KEY_SKIP = "key_skip"
     }
 }

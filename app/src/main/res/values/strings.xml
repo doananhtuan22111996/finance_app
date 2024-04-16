@@ -33,5 +33,6 @@
     <string name="content_1">Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem semper parturient.</string>
     <string name="content_2">Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem semper parturient.</string>
     <string name="content_3">Semper in cursus magna et eu varius nunc adipiscing. Elementum justo, laoreet id sem semper parturient.</string>
+    <string name="skip">Skip</string>
     <!--End OnBoarding-->
 </resources>

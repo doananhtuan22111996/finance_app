@@ -40,12 +40,4 @@ class AuthRepositoryImpl(
             override suspend fun processResponse(request: ObjectResponse<Nothing>?): ResultModel.Success<Nothing> =
                 ResultModel.Success()
         }.build()
-
-//    override suspend fun saveToken(
-//        token: String, refreshToken: String
-//    ): Flow<ResultModel<Nothing>> {
-//        preferenceWrapper.saveString(Config.SharePreference.KEY_AUTH_TOKEN, token)
-//        preferenceWrapper.saveString(Config.SharePreference.KEY_AUTH_REFRESH_TOKEN, refreshToken)
-//        return emptyFlow()
-//    }
 }

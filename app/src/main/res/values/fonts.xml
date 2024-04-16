@@ -81,6 +81,11 @@
         <item name="lineHeight">@dimen/line_height_18</item>
     </style>
 
+    <style name="TextAppearance.FontPath.Gilroy.Body_12_Regular" parent="TextAppearance.FontPath.Gilroy.Regular">
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="lineHeight">@dimen/line_height_18</item>
+    </style>
+
     <style name="TextAppearance.FontPath.Gilroy.Caption_12_Medium" parent="TextAppearance.FontPath.Gilroy.Medium">
         <item name="android:textSize">@dimen/text_size_12</item>
         <item name="lineHeight">@dimen/line_height_16</item>
