@@ -16,7 +16,7 @@ open class BaseViewModel : ViewModel() {
 
     fun setAppException(error: ResultModel.AppException?) {
         if (error == null) return
-        exception.value = error
         Timber.e("executeException: ${error.message}")
+        exception.value = error
     }
 }

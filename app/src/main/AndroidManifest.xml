@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".pages.routing.RootActivity"
+            android:name=".pages.main.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.SkeletonTheme"

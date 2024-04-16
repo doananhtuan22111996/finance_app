@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import vn.finance.app.R
 import vn.finance.app.base.BaseFragment
 import vn.finance.app.databinding.FragmentLoginBinding
-import vn.finance.app.pages.routing.RootViewModel
+import vn.finance.app.pages.main.RootViewModel
 
 class LoginFragment : BaseFragment<RootViewModel, LoginViewModel, FragmentLoginBinding>() {
 

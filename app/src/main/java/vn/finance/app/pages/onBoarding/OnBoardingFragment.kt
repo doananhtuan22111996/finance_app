@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import vn.finance.app.R
 import vn.finance.app.base.BaseFragment
 import vn.finance.app.databinding.FragmentOnboardingBinding
-import vn.finance.app.pages.routing.RootViewModel
+import vn.finance.app.pages.main.RootViewModel
 
 class OnBoardingFragment :
     BaseFragment<RootViewModel, OnBoardingViewModel, FragmentOnboardingBinding>() {
@@ -62,8 +62,16 @@ class OnBoardingFragment :
         }
 
         viewBinding.tvSkip.setOnClickListener {
-            // TODO navigate to Login
-            // TODO set value flag onboarding -> don't show onboarding in next time
+            viewModel.onSkip()
+        }
+    }
+
+    override fun bindViewModel() {
+        super.bindViewModel()
+        viewModel.skipped.observe(this) { skipped ->
+            if (skipped) {
+                navController.navigate(R.id.pushToLoginFragment)
+            }
         }
     }
 
